@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Next.js build outputs
+.next/
+**/.next/
+out/
+**/out/
+build/
+dist/
+
+# OS and Environment
+.DS_Store
+*.pem
+.env
+.env*.local
+*.log
+
+# Large temporary / raw upload artifacts (if not needed in repo)
+*.zip
+
+# TypeScript cache
+*.tsbuildinfo
