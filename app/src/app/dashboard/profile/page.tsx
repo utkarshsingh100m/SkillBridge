@@ -451,17 +451,11 @@ export default function ProfilePage() {
           )}
 
           {/* Dark scrim overlay for contrast */}
-          <div className="absolute inset-0 bg-black/30 backdrop-blur-[0.5px]" />
-
-          <div className="flex items-center gap-2 relative z-10">
-            <span className="bg-black/40 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-semibold text-white flex items-center gap-1.5 shadow-sm border border-white/10">
-              <ShieldCheck size={14} className="text-sb-wash" /> Build With Bharat 4.0 Verified
-            </span>
-          </div>
+          <div className="absolute inset-0 bg-black/25 backdrop-blur-[0.5px]" />
 
           <button
             onClick={() => handleOpenModal("banner")}
-            className="px-3.5 py-1.5 bg-black/50 hover:bg-black/70 backdrop-blur-md text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md border border-white/10 cursor-pointer relative z-10"
+            className="px-3.5 py-1.5 bg-black/50 hover:bg-black/70 backdrop-blur-md text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md border border-white/10 cursor-pointer relative z-10 ml-auto"
           >
             <Palette size={13} /> Change Banner &amp; Photo
           </button>
@@ -1029,15 +1023,10 @@ export default function ProfilePage() {
                       )}
                       
                       {/* Scrim overlay */}
-                      <div className="absolute inset-0 bg-black/30" />
-                      
-                      {/* Badge in preview */}
-                      <div className="relative z-10 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-semibold text-white border border-white/10">
-                        <ShieldCheck size={12} className="text-sb-wash" /> Verified Finalist
-                      </div>
+                      <div className="absolute inset-0 bg-black/25" />
 
                       {/* Mock avatar cutout in corner */}
-                      <div className="relative z-10 self-end -mb-1">
+                      <div className="relative z-10 self-end -mb-1 ml-auto">
                         <div className="w-10 h-10 rounded-full ring-2 ring-white shadow-md overflow-hidden bg-white">
                           <Avatar src={formAvatar} name={formName} size="sm" />
                         </div>
