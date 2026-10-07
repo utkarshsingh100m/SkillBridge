@@ -470,57 +470,55 @@ export default function ProfilePage() {
         </div>
 
         {/* Profile Details Header */}
-        <div className="px-8 pb-8 pt-0 relative">
+        <div className="px-4 sm:px-8 pb-6 sm:pb-8 pt-0 relative">
 
           {/* Avatar — absolutely positioned to overlap the banner above */}
           <div
-            className="absolute -top-14 left-8 z-10 group"
-            style={{ width: "112px", height: "112px" }}
+            className="absolute -top-12 md:-top-14 left-4 sm:left-8 z-10 group"
           >
-            <div className="w-28 h-28 rounded-full ring-4 ring-white shadow-xl overflow-hidden bg-white">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full ring-4 ring-white shadow-xl overflow-hidden bg-white">
               <Avatar src={user.avatar} name={user.name} size="2xl" />
             </div>
             <button
               onClick={() => handleOpenModal("photo")}
-              className="absolute bottom-1 right-1 p-2 bg-sb-dark hover:bg-sb-green text-white rounded-full shadow-md transition-all group-hover:scale-110 cursor-pointer z-20"
+              className="absolute bottom-1 right-1 p-1.5 sm:p-2 bg-sb-dark hover:bg-sb-green text-white rounded-full shadow-md transition-all group-hover:scale-110 cursor-pointer z-20"
               title="Update Profile Photo"
             >
-              <Camera size={14} />
+              <Camera size={13} />
             </button>
           </div>
 
           {/* Top row: spacer for avatar + name text + action buttons */}
-          {/* pt-4 gives breathing room below the banner; pl accounts for avatar width + gap */}
-          <div className="flex items-start justify-between gap-4 pt-4" style={{ paddingLeft: "136px" }}>
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 pt-16 md:pt-4 md:pl-[136px]">
             {/* Name & Headline */}
             <div className="space-y-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
-                <h1 className="text-2xl font-bold text-sb-dark tracking-tight leading-tight">{user.name}</h1>
+                <h1 className="text-xl sm:text-2xl font-bold text-sb-dark tracking-tight leading-tight">{user.name}</h1>
                 <span className="p-1 bg-sb-bg rounded-full text-sb-green shadow-xs shrink-0">
                   <ShieldCheck size={16} />
                 </span>
               </div>
-              <p className="text-sm font-semibold text-sb-mid leading-snug">
+              <p className="text-xs sm:text-sm font-semibold text-sb-mid leading-snug">
                 {user.headline}
               </p>
-              <div className="flex flex-wrap items-center gap-3 text-xs text-text-muted pt-0.5">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-text-muted pt-1">
                 <span className="flex items-center gap-1 font-medium">
                   <MapPin size={12} className="text-sb-green" /> {user.location}
                 </span>
-                <span className="text-border">•</span>
+                <span className="text-border hidden sm:inline">•</span>
                 <span className="flex items-center gap-1 font-medium text-sb-green">
-                  <Briefcase size={12} /> Open to Hackathon Teaming
+                  <Briefcase size={12} /> Open to Hackathons
                 </span>
-                <span className="text-border">•</span>
+                <span className="text-border hidden sm:inline">•</span>
                 <span className="text-text-secondary font-medium">500+ Connections</span>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex items-center gap-2.5 shrink-0 mt-0.5">
+            <div className="flex items-center gap-2 shrink-0 mt-1 md:mt-0.5">
               <button
                 onClick={() => handleOpenModal("general")}
-                className="px-4 py-2.5 bg-sb-dark hover:bg-sb-green text-white text-xs font-semibold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
+                className="flex-1 md:flex-initial px-4 py-2.5 bg-sb-dark hover:bg-sb-green text-white text-xs font-semibold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Edit3 size={14} /> Customize Profile
               </button>
@@ -537,8 +535,8 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          {/* Extra space below so nothing clips under the avatar */}
-          <div className="mt-6">
+          {/* Extra space below so nothing clips */}
+          <div className="mt-4 sm:mt-6">
 
           {/* Open to Work Banner */}
           {user.openToHackathons && (

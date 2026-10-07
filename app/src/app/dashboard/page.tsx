@@ -53,16 +53,16 @@ export default function DashboardPage() {
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-fade-in">
       {/* Greeting */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-sb-dark">
+          <h1 className="text-xl sm:text-2xl font-bold text-sb-dark">
             Good afternoon, {currentUser.name.split(" ")[0]}
           </h1>
-          <p className="text-sm text-text-secondary mt-0.5">
+          <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
             Let&apos;s make progress on your project.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-start sm:self-auto">
           <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-full text-xs font-medium text-amber-700">
             <Zap size={12} /> Hackathon Mode
           </span>
@@ -71,17 +71,17 @@ export default function DashboardPage() {
 
       {/* Active Project Card */}
       <div className="bg-white rounded-2xl border border-border shadow-sm overflow-hidden">
-        <div className="p-6">
-          <div className="flex items-start justify-between">
-            <div>
+        <div className="p-4 sm:p-6">
+          <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-5">
+            <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="green" size="sm">▲ Active Project</Badge>
               </div>
-              <h2 className="text-xl font-bold text-sb-dark">{project.title}</h2>
-              <p className="text-sm text-text-secondary mt-1 max-w-lg">
+              <h2 className="text-lg sm:text-xl font-bold text-sb-dark">{project.title}</h2>
+              <p className="text-xs sm:text-sm text-text-secondary mt-1 max-w-lg leading-relaxed">
                 {project.description}
               </p>
-              <div className="flex gap-2 mt-3">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-3">
                 {project.tags.map((tag) => (
                   <Badge key={tag} variant="outline" size="sm">{tag}</Badge>
                 ))}
@@ -89,8 +89,8 @@ export default function DashboardPage() {
             </div>
 
             {/* Countdown */}
-            <div className="text-right shrink-0 ml-6">
-              <p className="text-xs text-text-muted mb-2">Hackathon ends in</p>
+            <div className="shrink-0 pt-3 lg:pt-0 border-t lg:border-t-0 border-border">
+              <p className="text-xs text-text-muted mb-2 text-left lg:text-right">Hackathon ends in</p>
               <div className="flex gap-2">
                 {[
                   { val: countdown.hours, label: "Hours" },
@@ -98,8 +98,8 @@ export default function DashboardPage() {
                   { val: countdown.seconds, label: "Seconds" },
                 ].map((item) => (
                   <div key={item.label} className="text-center">
-                    <div className="w-14 h-14 bg-sb-dark rounded-xl flex items-center justify-center">
-                      <span className="text-2xl font-bold text-white font-mono">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 bg-sb-dark rounded-xl flex items-center justify-center">
+                      <span className="text-xl sm:text-2xl font-bold text-white font-mono">
                         {String(item.val).padStart(2, "0")}
                       </span>
                     </div>
@@ -127,7 +127,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Missing roles */}
-          <div className="mt-4 flex items-center gap-2">
+          <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="text-xs text-text-muted">Missing Roles:</span>
             {project.roles
               .filter((r) => !r.filled)
@@ -140,7 +140,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Team Members */}
-          <div className="mt-6 flex items-center justify-between">
+          <div className="mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
             <div className="flex -space-x-2">
               {project.teamMembers.map((member) => (
                 <Avatar
@@ -157,7 +157,7 @@ export default function DashboardPage() {
 
             <Link
               href="/dashboard/find-mentors"
-              className="inline-flex items-center gap-1.5 px-4 py-2 bg-sb-dark text-white text-sm font-medium rounded-lg hover:bg-sb-green transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 bg-sb-dark text-white text-xs sm:text-sm font-medium rounded-xl hover:bg-sb-green transition-all shadow-xs"
             >
               Find a Mentor <ArrowRight size={14} />
             </Link>
@@ -166,10 +166,10 @@ export default function DashboardPage() {
       </div>
 
       {/* Two Column Section */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
         {/* Skill Gaps */}
-        <div className="bg-white rounded-2xl border border-border shadow-sm p-6">
-          <h3 className="font-semibold text-sb-dark mb-4">Team Skill Gaps</h3>
+        <div className="bg-white rounded-2xl border border-border shadow-sm p-4 sm:p-6">
+          <h3 className="font-semibold text-sb-dark mb-4 text-sm sm:text-base">Team Skill Gaps</h3>
           <div className="space-y-3">
             {skillGaps.map((gap) => (
               <div
@@ -181,8 +181,8 @@ export default function DashboardPage() {
                     {gap.role.includes("AI") ? <Bot size={18} /> : <Mic size={18} />}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-sb-dark">{gap.role}</p>
-                    <p className="text-xs text-text-muted">{gap.description}</p>
+                    <p className="text-xs sm:text-sm font-medium text-sb-dark">{gap.role}</p>
+                    <p className="text-[11px] sm:text-xs text-text-muted">{gap.description}</p>
                   </div>
                 </div>
                 <button className="p-1.5 hover:bg-amber-100 rounded-lg transition-colors">
@@ -193,15 +193,15 @@ export default function DashboardPage() {
           </div>
           <Link
             href="/dashboard/find-mentors"
-            className="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-sb-dark text-white text-sm font-medium rounded-xl hover:bg-sb-green transition-all"
+            className="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-sb-dark text-white text-xs sm:text-sm font-medium rounded-xl hover:bg-sb-green transition-all shadow-xs"
           >
             <Search size={14} /> Find Mentor
           </Link>
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-2xl border border-border shadow-sm p-6">
-          <h3 className="font-semibold text-sb-dark mb-4">Quick Actions</h3>
+        <div className="bg-white rounded-2xl border border-border shadow-sm p-4 sm:p-6">
+          <h3 className="font-semibold text-sb-dark mb-4 text-sm sm:text-base">Quick Actions</h3>
           <div className="space-y-3">
             {[
               { label: "Find Teammates", desc: "Search for students with matching skills", href: "/dashboard/find-teammates", icon: Users },
@@ -219,13 +219,13 @@ export default function DashboardPage() {
                   <div className="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-sb-dark flex items-center justify-center shrink-0 group-hover:bg-sb-green/10 group-hover:text-sb-green transition-colors">
                     <Icon size={18} />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-sb-dark group-hover:text-sb-green transition-colors">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-sb-dark group-hover:text-sb-green transition-colors truncate">
                       {action.label}
                     </p>
-                    <p className="text-xs text-text-muted">{action.desc}</p>
+                    <p className="text-[11px] sm:text-xs text-text-muted truncate">{action.desc}</p>
                   </div>
-                  <ArrowRight size={14} className="text-text-muted group-hover:text-sb-green transition-colors" />
+                  <ArrowRight size={14} className="text-text-muted group-hover:text-sb-green transition-colors shrink-0" />
                 </Link>
               );
             })}
@@ -234,21 +234,21 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white rounded-2xl border border-border shadow-sm p-6">
-        <h3 className="font-semibold text-sb-dark mb-4">Recent Activity</h3>
+      <div className="bg-white rounded-2xl border border-border shadow-sm p-4 sm:p-6">
+        <h3 className="font-semibold text-sb-dark mb-4 text-sm sm:text-base">Recent Activity</h3>
         <div className="space-y-4">
           {[
             { time: "2 hours ago", text: "Rahul Sharma accepted your mentorship request", type: "success" },
             { time: "5 hours ago", text: "New team member Ashmit joined as Database lead", type: "info" },
-            { time: "1 day ago", text: "Project 'AI Healthcare Assistant' milestone updated", type: "info" },
+            { time: "1 day ago", text: "Project 'SkillBridge' milestone updated", type: "info" },
           ].map((activity, i) => (
             <div key={i} className="flex items-start gap-3">
               <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
                 activity.type === "success" ? "bg-green-500" : "bg-blue-500"
               }`} />
               <div>
-                <p className="text-sm text-text-primary">{activity.text}</p>
-                <p className="text-xs text-text-muted flex items-center gap-1 mt-0.5">
+                <p className="text-xs sm:text-sm text-text-primary">{activity.text}</p>
+                <p className="text-[11px] text-text-muted flex items-center gap-1 mt-0.5">
                   <Clock size={10} /> {activity.time}
                 </p>
               </div>

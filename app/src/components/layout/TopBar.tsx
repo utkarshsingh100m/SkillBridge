@@ -111,9 +111,9 @@ export default function TopBar() {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-border flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30 shadow-xs">
+    <header className="h-16 bg-white border-b border-border flex items-center justify-between px-3 sm:px-6 sticky top-0 z-30 shadow-xs">
       {/* Left: Mobile Menu Trigger + Search */}
-      <div className="flex items-center gap-2 flex-1 max-w-md mr-3">
+      <div className="flex items-center gap-2 flex-1 max-w-md mr-2 sm:mr-3 min-w-0">
         <button
           onClick={() => window.dispatchEvent(new Event("open_mobile_sidebar"))}
           aria-label="Open Navigation Menu"
@@ -123,12 +123,12 @@ export default function TopBar() {
         </button>
 
         {/* Search Input */}
-        <div className="relative flex-1">
-          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" />
+        <div className="relative flex-1 min-w-0">
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted shrink-0" />
           <input
             type="text"
-            placeholder="Search mentors, projects, teammates..."
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-surface border border-border text-xs focus:outline-none focus:ring-2 focus:ring-sb-green/20 focus:border-sb-green transition-all"
+            placeholder="Search..."
+            className="w-full pl-8 sm:pl-9 pr-3 py-1.5 sm:py-2 rounded-xl bg-surface border border-border text-xs focus:outline-none focus:ring-2 focus:ring-sb-green/20 focus:border-sb-green transition-all"
           />
         </div>
       </div>
