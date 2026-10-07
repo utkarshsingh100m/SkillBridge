@@ -149,7 +149,7 @@ npm run start
 
 ## 🏆 Build with Bharat 4.0
 
-- **Team Name**: Team Alpha
+- **Team Name**: Team GenerateZ
 - **Project**: SkillBridge
 - **Submission Track**: EdTech, AI, & Developer Productivity
 
