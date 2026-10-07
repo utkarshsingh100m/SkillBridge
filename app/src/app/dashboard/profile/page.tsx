@@ -149,6 +149,7 @@ const sampleBannerImages = [
 ];
 
 const presetAvatars = [
+  { id: "p0", name: "Utkarsh", src: "/avatars/utkarsh.jpg" },
   { id: "p1", name: "Praveen", src: "/avatars/praveen.jpg" },
   { id: "p2", name: "Rahul", src: "/avatars/rahul.jpg" },
   { id: "p3", name: "Elena", src: "/avatars/elena.jpg" },
@@ -167,11 +168,11 @@ export default function ProfilePage() {
     bannerKey: "emerald",
     customBannerUrl:
       "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1400&auto=format&fit=crop&q=80",
-    portfolioUrl: "https://praveenmishra.dev",
-    linkedinUrl: "https://linkedin.com/in/praveenmishra-dev",
-    githubUrl: "https://github.com/praveenmishra",
-    leetcodeUrl: "https://leetcode.com/praveen_codes",
-    twitterUrl: "https://x.com/praveen_builds",
+    portfolioUrl: `https://${defaultUser.githubUsername}.dev`,
+    linkedinUrl: `https://linkedin.com/in/${defaultUser.githubUsername}`,
+    githubUrl: `https://github.com/${defaultUser.githubUsername}`,
+    leetcodeUrl: `https://leetcode.com/${defaultUser.githubUsername}`,
+    twitterUrl: `https://x.com/${defaultUser.githubUsername}`,
   });
 
   // Languages state
@@ -292,7 +293,12 @@ export default function ProfilePage() {
       const saved = localStorage.getItem("skillbridge_user");
       if (saved) {
         const parsed = JSON.parse(saved);
-        setUser((prev) => ({ ...prev, ...parsed }));
+        if (parsed.name === "Praveen Mishra") {
+          localStorage.removeItem("skillbridge_user");
+          setUser((prev) => ({ ...prev, ...defaultUser }));
+        } else {
+          setUser((prev) => ({ ...prev, ...parsed }));
+        }
       }
     } catch (e) {
       console.error(e);

@@ -35,7 +35,7 @@ const mockNotifications: NotificationItem[] = [
   },
   {
     id: "n2",
-    title: "Aanya Patel sent a squad collaboration request for HealthAI Assistant.",
+    title: "Arya Shukla sent a squad collaboration request for SkillBridge.",
     time: "1 hour ago",
     read: false,
     type: "invite",
@@ -66,13 +66,19 @@ export default function TopBar() {
         const saved = localStorage.getItem("skillbridge_user");
         if (saved) {
           const parsed = JSON.parse(saved);
-          setUser((prev) => ({ ...prev, ...parsed }));
+          if (parsed.name === "Praveen Mishra") {
+            localStorage.removeItem("skillbridge_user");
+            setUser(defaultUser);
+          } else {
+            setUser((prev) => ({ ...prev, ...parsed }));
+          }
+        } else {
+          setUser(defaultUser);
         }
       } catch (e) {
         console.error(e);
       }
     };
-
     syncUser();
     window.addEventListener("profile_updated", syncUser);
     window.addEventListener("storage", syncUser);

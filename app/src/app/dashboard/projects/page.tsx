@@ -27,9 +27,9 @@ interface Milestone {
 }
 
 const initialMilestones: Milestone[] = [
-  { id: "m1", title: "Problem Definition & Literature Review", dueDate: "Day 1", completed: true, assignedTo: "Praveen" },
-  { id: "m2", title: "RAG Pipeline & LLM Integration", dueDate: "Day 2", completed: true, assignedTo: "Utkarsh" },
-  { id: "m3", title: "Frontend Dashboard & Stitch UI Integration", dueDate: "Day 2", completed: true, assignedTo: "Praveen" },
+  { id: "m1", title: "Problem Definition & Literature Review", dueDate: "Day 1", completed: true, assignedTo: "Utkarsh" },
+  { id: "m2", title: "RAG Pipeline & LLM Integration", dueDate: "Day 2", completed: true, assignedTo: "Ashmit" },
+  { id: "m3", title: "Frontend Dashboard & Stitch UI Integration", dueDate: "Day 2", completed: true, assignedTo: "Rudraksh" },
   { id: "m4", title: "Mentor Review with Rahul Sharma", dueDate: "Day 3 (Today)", completed: false, assignedTo: "Team" },
   { id: "m5", title: "Final Video Demo & Submission", dueDate: "Day 3 (5 PM)", completed: false, assignedTo: "Shaurya" },
 ];

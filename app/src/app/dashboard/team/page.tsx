@@ -30,19 +30,19 @@ interface Task {
 }
 
 const initialTasks: Task[] = [
-  { id: "t1", title: "Setup Next.js 15 & Tailwind design tokens", assignee: "Praveen", status: "done", tag: "Frontend" },
+  { id: "t1", title: "Setup Next.js 15 & Tailwind design tokens", assignee: "Utkarsh", status: "done", tag: "Frontend" },
   { id: "t2", title: "Build FastAPI RAG retrieval endpoint", assignee: "Utkarsh", status: "done", tag: "Backend" },
   { id: "t3", title: "Vector embeddings indexing with ChromaDB", assignee: "Ashmit", status: "done", tag: "Database" },
-  { id: "t4", title: "Integrate Stitch screen components into web app", assignee: "Praveen", status: "in_progress", tag: "Frontend" },
+  { id: "t4", title: "Integrate Stitch screen components into web app", assignee: "Rudraksh", status: "in_progress", tag: "Design" },
   { id: "t5", title: "Prepare pitch deck slides & demo video script", assignee: "Shaurya", status: "in_progress", tag: "Research" },
-  { id: "t6", title: "Schedule final review with Mentor Rahul Sharma", assignee: "Praveen", status: "todo", tag: "Mentorship" },
-  { id: "t7", title: "Conduct end-to-end stress test with mock patients", assignee: "Team", status: "todo", tag: "QA" },
+  { id: "t6", title: "Schedule final review with Mentor Rahul Sharma", assignee: "Utkarsh", status: "todo", tag: "Mentorship" },
+  { id: "t7", title: "Conduct end-to-end stress test with mock peers", assignee: "Team", status: "todo", tag: "QA" },
 ];
 
 export default function TeamPage() {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [newTaskTitle, setNewTaskTitle] = useState("");
-  const [newTaskAssignee, setNewTaskAssignee] = useState("Praveen");
+  const [newTaskAssignee, setNewTaskAssignee] = useState("Utkarsh");
   const [newTaskTag, setNewTaskTag] = useState("Frontend");
   const [showTaskInput, setShowTaskInput] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
@@ -50,20 +50,11 @@ export default function TeamPage() {
   const teamMembers = [
     {
       id: "u1",
-      name: "Praveen Mishra",
-      role: "Lead Developer & Frontend",
-      skills: ["React", "Next.js", "TypeScript", "TailwindCSS"],
-      avatar: "/avatars/praveen.jpg",
-      github: "praveenmishra",
-      status: "Active Now",
-    },
-    {
-      id: "t2",
       name: "Utkarsh",
-      role: "Backend & Systems",
-      skills: ["Python", "FastAPI", "Docker", "PostgreSQL"],
-      avatar: "/avatars/aman.jpg",
-      github: "utkarsh-dev",
+      role: "Lead Developer & Full-Stack",
+      skills: ["React", "Next.js", "TypeScript", "TailwindCSS", "Node.js"],
+      avatar: "/avatars/utkarsh.jpg",
+      github: "utkarshsingh100m",
       status: "Active Now",
     },
     {
@@ -71,7 +62,7 @@ export default function TeamPage() {
       name: "Ashmit",
       role: "Database & Vector Store",
       skills: ["MongoDB", "ChromaDB", "Redis", "Cloud"],
-      avatar: "/avatars/rahul.jpg",
+      avatar: "/avatars/ashmit.jpg",
       github: "ashmit-db",
       status: "Idle (1h ago)",
     },
@@ -79,9 +70,18 @@ export default function TeamPage() {
       id: "t3",
       name: "Shaurya",
       role: "AI Research & Pitch",
-      skills: ["NLP", "Medical Datasets", "Presentation"],
-      avatar: "/avatars/elena.jpg",
+      skills: ["NLP", "Education Tech", "Presentation"],
+      avatar: "/avatars/shaurya.jpg",
       github: "shaurya-ai",
+      status: "Active Now",
+    },
+    {
+      id: "t4",
+      name: "Rudraksh",
+      role: "UI/UX & Product Design",
+      skills: ["Figma", "UI Design", "TailwindCSS", "Prototyping"],
+      avatar: "/avatars/shaurya.jpg",
+      github: "rudraksh-design",
       status: "Active Now",
     },
   ];
@@ -256,10 +256,10 @@ export default function TeamPage() {
               onChange={(e) => setNewTaskAssignee(e.target.value)}
               className="p-2.5 bg-surface rounded-xl text-xs border border-border focus:outline-none"
             >
-              <option value="Praveen">Praveen</option>
               <option value="Utkarsh">Utkarsh</option>
               <option value="Ashmit">Ashmit</option>
               <option value="Shaurya">Shaurya</option>
+              <option value="Rudraksh">Rudraksh</option>
             </select>
             <select
               value={newTaskTag}

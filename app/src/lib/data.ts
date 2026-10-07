@@ -12,14 +12,14 @@ import {
 // ─── Current User (Praveen) ────────────────────────────────
 export const currentUser: UserProfile = {
   id: "u1",
-  name: "Praveen Mishra",
-  avatar: "/avatars/praveen.jpg",
+  name: "Utkarsh",
+  avatar: "/avatars/utkarsh.jpg",
   role: "student",
   headline: "Full-Stack Developer | React & Node.js",
-  location: "Mumbai, India",
-  bio: "Computer Science student passionate about building healthcare tech. Currently working on an AI Healthcare Assistant for hackathon season.",
+  location: "New Delhi, India",
+  bio: "Computer Science student passionate about building AI-powered tools for education and accessibility. Currently working on a smart tutoring platform for underprivileged students.",
   skills: ["React", "Next.js", "Node.js", "TypeScript", "TailwindCSS", "MongoDB"],
-  interests: ["Healthcare", "AI/ML", "Web Development"],
+  interests: ["Education Tech", "AI/ML", "Web Development"],
   experience: "Intermediate",
   availability: [
     { day: "Mon", times: ["10:00 AM", "02:00 PM"] },
@@ -28,7 +28,7 @@ export const currentUser: UserProfile = {
     { day: "Sat", times: ["10:00 AM", "02:00 PM", "04:00 PM"] },
   ],
   availabilityLabel: "Available now",
-  githubUsername: "praveenmishra",
+  githubUsername: "utkarshsingh100m",
   rating: 4.5,
 };
 
@@ -213,7 +213,7 @@ export const mentorMatches: MatchResult[] = [
 export const teammates: UserProfile[] = [
   {
     id: "t1",
-    name: "Aanya Patel",
+    name: "Arya Shukla",
     avatar: "/avatars/aanya.jpg",
     role: "student",
     headline: "Frontend Developer | React Enthusiast",
@@ -239,7 +239,7 @@ export const teammates: UserProfile[] = [
   },
   {
     id: "t3",
-    name: "Sneha Gupta",
+    name: "Gauravi Mishra",
     avatar: "/avatars/aanya.jpg",
     role: "student",
     headline: "ML Engineer | Data Science",
@@ -280,11 +280,11 @@ export const teammateMatches: MatchResult[] = [
 export const projects: Project[] = [
   {
     id: "p1",
-    title: "AI Healthcare Assistant",
+    title: "SkillBridge",
     description:
-      "AI based health assistant for early diagnosis using RAG pipeline and medical document analysis. Building a conversational AI that helps patients understand their symptoms.",
-    tags: ["AI/ML", "Healthcare", "Web App"],
-    domain: "Healthcare",
+      "SkillBridge is a modern tech-driven platform designed to bridge the gap between students and experienced mentors. It utilizes intelligent matching algorithms to connect mentees with the right mentors based on skills, interests, and availability.",
+    tags: ["AI/ML", "Ed-Tech", "Web App"],
+    domain: "Ed-Tech",
     timeline: "Build With Bharat 4.0",
     roles: [
       { title: "Frontend", skills: ["React", "Next.js"], filled: true, assignedTo: "u1" },
@@ -296,10 +296,10 @@ export const projects: Project[] = [
     ],
     creatorId: "u1",
     teamMembers: [
-      { id: "u1", name: "Praveen Mishra", avatar: "/avatars/praveen.jpg", role: "Frontend" },
-      { id: "t2", name: "Utkarsh", avatar: "/avatars/utkarsh.jpg", role: "Backend" },
+      { id: "u1", name: "Utkarsh", avatar: "/avatars/utkarsh.jpg", role: "Frontend & Lead" },
       { id: "t2b", name: "Ashmit", avatar: "/avatars/ashmit.jpg", role: "Database" },
       { id: "t3", name: "Shaurya", avatar: "/avatars/shaurya.jpg", role: "Research" },
+      { id: "t4", name: "Rudraksh", avatar: "/avatars/shaurya.jpg", role: "Design" },
     ],
     status: "Active",
     hackathonDeadline: "2026-10-09T18:00:00+05:30",
@@ -318,7 +318,7 @@ export const projects: Project[] = [
     ],
     creatorId: "t1",
     teamMembers: [
-      { id: "t1", name: "Aanya Patel", avatar: "/avatars/aanya.jpg", role: "Mobile Dev" },
+      { id: "t1", name: "Arya Shukla", avatar: "/avatars/aanya.jpg", role: "Mobile Dev" },
     ],
     status: "Planning",
     stars: 856,

@@ -245,7 +245,7 @@ export default function SessionsPage() {
                     />
                   ) : (
                     <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center text-xl font-bold">
-                      PM
+                      {currentUser.name.slice(0, 2).toUpperCase()}
                     </div>
                   )}
                   <div className="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-semibold text-white flex items-center gap-1.5">
