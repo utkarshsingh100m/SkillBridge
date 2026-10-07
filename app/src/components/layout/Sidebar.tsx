@@ -11,12 +11,14 @@ import {
   MessageSquare,
   Calendar,
   User,
+  Trophy,
 } from "lucide-react";
 
 const navItems = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Find Mentors", href: "/dashboard/find-mentors", icon: Search },
   { label: "Find Teammates", href: "/dashboard/find-teammates", icon: Users },
+  { label: "Hackathons", href: "/dashboard/hackathons", icon: Trophy },
   { label: "My Projects", href: "/dashboard/projects", icon: FolderKanban },
   { label: "My Team", href: "/dashboard/team", icon: UsersRound },
   { label: "Messages", href: "/dashboard/messages", icon: MessageSquare },
