@@ -2,9 +2,7 @@
 
 import { useState, useEffect } from "react";
 import {
-  User,
   MapPin,
-  Mail,
   Globe,
   Award,
   Calendar,
@@ -14,7 +12,6 @@ import {
   X,
   Code2,
   ShieldCheck,
-  Star,
   Camera,
   Plus,
   Trash2,
@@ -28,8 +25,7 @@ import {
   Check,
 } from "lucide-react";
 import Avatar from "@/components/ui/Avatar";
-import Badge from "@/components/ui/Badge";
-import { currentUser as initialUser, projects } from "@/lib/data";
+import { currentUser as defaultUser } from "@/lib/data";
 
 interface LanguageProficiency {
   name: string;
@@ -64,22 +60,22 @@ interface CertificationItem {
   credentialId: string;
 }
 
-const bannerGradients: Record<string, { name: string; class: string }> = {
+const bannerGradients: Record<string, { name: string; bgClass: string }> = {
   emerald: {
     name: "Bharat Emerald",
-    class: "bg-gradient-to-r from-emerald-950 via-teal-900 to-emerald-800",
+    bgClass: "bg-gradient-to-r from-emerald-950 via-teal-900 to-emerald-800",
   },
   cyber: {
     name: "Cyber Indigo",
-    class: "bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900",
+    bgClass: "bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-900",
   },
   sunset: {
     name: "Hackathon Dusk",
-    class: "bg-gradient-to-r from-amber-950 via-rose-950 to-emerald-950",
+    bgClass: "bg-gradient-to-r from-amber-950 via-rose-950 to-emerald-950",
   },
   ocean: {
     name: "Deep Ocean",
-    class: "bg-gradient-to-r from-blue-950 via-teal-950 to-emerald-950",
+    bgClass: "bg-gradient-to-r from-blue-950 via-teal-950 to-emerald-950",
   },
 };
 
@@ -93,9 +89,9 @@ const presetAvatars = [
 ];
 
 export default function ProfilePage() {
-  // Main user state
+  // Main user profile state
   const [user, setUser] = useState({
-    ...initialUser,
+    ...defaultUser,
     openToHackathons: true,
     openToRoles: "Full-Stack Dev, ML Engineer, Tech Lead",
     bannerKey: "emerald",
@@ -105,17 +101,6 @@ export default function ProfilePage() {
     leetcodeUrl: "https://leetcode.com/praveen_codes",
     twitterUrl: "https://x.com/praveen_builds",
   });
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("skillbridge_user");
-      if (saved) {
-        setUser((prev) => ({ ...prev, ...JSON.parse(saved) }));
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }, []);
 
   // Languages state
   const [languages, setLanguages] = useState<LanguageProficiency[]>([
@@ -159,7 +144,7 @@ export default function ProfilePage() {
   ]);
 
   // Education
-  const [education, setEducation] = useState<EducationItem[]>([
+  const [education] = useState<EducationItem[]>([
     {
       id: "edu1",
       institution: "Indian Institute of Information Technology (IIIT)",
@@ -171,7 +156,7 @@ export default function ProfilePage() {
   ]);
 
   // Certifications
-  const [certifications, setCertifications] = useState<CertificationItem[]>([
+  const [certifications] = useState<CertificationItem[]>([
     {
       id: "cert1",
       title: "Build With Bharat 4.0 - Verified Finalist",
@@ -188,7 +173,7 @@ export default function ProfilePage() {
     },
   ]);
 
-  // Modal State
+  // Modal & Form state
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
     "general" | "photo" | "languages" | "skills" | "experience" | "socials"
@@ -205,7 +190,6 @@ export default function ProfilePage() {
   const [formAvatar, setFormAvatar] = useState(user.avatar);
   const [formBannerKey, setFormBannerKey] = useState(user.bannerKey);
 
-  // Social Temp States
   const [formGithub, setFormGithub] = useState(user.githubUrl);
   const [formLinkedin, setFormLinkedin] = useState(user.linkedinUrl);
   const [formPortfolio, setFormPortfolio] = useState(user.portfolioUrl);
@@ -218,13 +202,27 @@ export default function ProfilePage() {
 
   // Skill input state
   const [newSkillText, setNewSkillText] = useState("");
-  const [newSkillCategory, setNewSkillCategory] = useState<keyof typeof skillCategories>("frameworks");
+  const [newSkillCategory, setNewSkillCategory] =
+    useState<keyof typeof skillCategories>("frameworks");
 
   // Experience input state
   const [newExpRole, setNewExpRole] = useState("");
   const [newExpCompany, setNewExpCompany] = useState("");
   const [newExpDuration, setNewExpDuration] = useState("");
   const [newExpDesc, setNewExpDesc] = useState("");
+
+  // Sync with localStorage on client mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("skillbridge_user");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setUser((prev) => ({ ...prev, ...parsed }));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   const handleOpenModal = () => {
     setFormName(user.name);
@@ -234,7 +232,7 @@ export default function ProfilePage() {
     setFormOpenToWork(user.openToHackathons);
     setFormOpenToRoles(user.openToRoles);
     setFormAvatar(user.avatar);
-    setFormBannerKey(user.bannerKey);
+    setFormBannerKey(user.bannerKey || "emerald");
     setFormGithub(user.githubUrl);
     setFormLinkedin(user.linkedinUrl);
     setFormPortfolio(user.portfolioUrl);
@@ -270,7 +268,7 @@ export default function ProfilePage() {
     setTimeout(() => {
       setSavedSuccess(false);
       setEditModalOpen(false);
-    }, 700);
+    }, 600);
   };
 
   const handleAddLanguage = (e: React.FormEvent) => {
@@ -336,19 +334,18 @@ export default function ProfilePage() {
     }
   };
 
-  const currentBannerClass =
-    bannerGradients[user.bannerKey]?.class || bannerGradients.emerald.class;
+  const bannerClass =
+    bannerGradients[user.bannerKey]?.bgClass || bannerGradients.emerald.bgClass;
 
   return (
     <div className="max-w-5xl mx-auto space-y-8 animate-fade-in pb-16">
-      {/* ─── Hero Header & Banner Card (LinkedIn Style) ─── */}
-      <div className="bg-white rounded-3xl border border-border shadow-sm">
-        {/* Banner */}
+      {/* ─── Profile Card (LinkedIn Style) ─── */}
+      <div className="bg-white rounded-3xl border border-border shadow-sm overflow-hidden">
+        {/* Cover Banner */}
         <div
-          className={`h-48 ${currentBannerClass} rounded-t-3xl relative overflow-hidden flex items-start justify-between p-6 transition-all duration-300`}
+          className={`h-44 w-full ${bannerClass} relative flex items-start justify-between p-6`}
         >
-          <div className="absolute inset-0 bg-black/10 backdrop-blur-[0.5px]" />
-          <div className="relative z-10 flex items-center gap-2">
+          <div className="flex items-center gap-2 relative z-10">
             <span className="bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-semibold text-white flex items-center gap-1.5 shadow-sm">
               <ShieldCheck size={14} className="text-sb-wash" /> Build With Bharat 4.0 Verified
             </span>
@@ -359,17 +356,18 @@ export default function ProfilePage() {
               setActiveTab("photo");
               handleOpenModal();
             }}
-            className="relative z-10 px-3.5 py-1.5 bg-black/40 hover:bg-black/60 backdrop-blur-md text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
+            className="px-3.5 py-1.5 bg-black/40 hover:bg-black/60 backdrop-blur-md text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm cursor-pointer relative z-10"
           >
             <Palette size={13} /> Change Cover &amp; Photo
           </button>
         </div>
 
-        {/* Profile Info Header Content */}
-        <div className="px-8 pb-8 pt-0">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 -mt-16 mb-6">
+        {/* Profile Details Header */}
+        <div className="px-8 pb-8 pt-0 relative">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 -mt-14 mb-6">
             <div className="flex flex-col md:flex-row items-start md:items-end gap-5">
-              <div className="relative group shrink-0 w-28 h-28">
+              {/* Profile Avatar with Camera Button */}
+              <div className="relative group shrink-0" style={{ width: "112px", height: "112px" }}>
                 <div className="w-28 h-28 rounded-full ring-4 ring-white shadow-xl overflow-hidden bg-white flex items-center justify-center">
                   <Avatar src={user.avatar} name={user.name} size="2xl" />
                 </div>
@@ -378,13 +376,14 @@ export default function ProfilePage() {
                     setActiveTab("photo");
                     handleOpenModal();
                   }}
-                  className="absolute bottom-0 right-0 p-2 bg-sb-dark hover:bg-sb-green text-white rounded-full shadow-md transition-all group-hover:scale-110 cursor-pointer z-10"
+                  className="absolute bottom-0 right-0 p-2 bg-sb-dark hover:bg-sb-green text-white rounded-full shadow-md transition-all group-hover:scale-110 cursor-pointer z-20"
                   title="Update Profile Photo"
                 >
                   <Camera size={14} />
                 </button>
               </div>
 
+              {/* Name & Headline */}
               <div className="mb-1 space-y-1">
                 <div className="flex items-center gap-2.5">
                   <h1 className="text-2xl font-bold text-sb-dark tracking-tight">{user.name}</h1>
@@ -409,7 +408,7 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* Action Buttons */}
+            {/* Top Action Buttons */}
             <div className="flex items-center gap-2.5 self-start md:self-auto shrink-0">
               <button
                 onClick={handleOpenModal}
@@ -974,7 +973,7 @@ export default function ProfilePage() {
                               : "border-border hover:border-sb-light"
                           }`}
                         >
-                          <div className={`h-8 rounded-lg ${b.class} mb-2`} />
+                          <div className={`h-8 rounded-lg ${b.bgClass} mb-2`} />
                           <span className="text-xs font-bold text-sb-dark">{b.name}</span>
                           {formBannerKey === key && (
                             <span className="absolute top-2 right-2 bg-white rounded-full p-0.5 text-sb-green shadow-xs">

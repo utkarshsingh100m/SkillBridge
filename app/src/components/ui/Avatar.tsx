@@ -1,23 +1,22 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 
 interface AvatarProps {
   src?: string;
-  name: string;
+  name?: string;
   size?: "sm" | "md" | "lg" | "xl" | "2xl";
   online?: boolean;
   verified?: boolean;
   className?: string;
 }
 
-const sizeMap = {
-  sm: "w-8 h-8 min-w-8 min-h-8 max-w-8 max-h-8 text-xs",
-  md: "w-10 h-10 min-w-10 min-h-10 max-w-10 max-h-10 text-sm",
-  lg: "w-14 h-14 min-w-14 min-h-14 max-w-14 max-h-14 text-base",
-  xl: "w-20 h-20 min-w-20 min-h-20 max-w-20 max-h-20 text-xl",
-  "2xl": "w-28 h-28 min-w-28 min-h-28 max-w-28 max-h-28 text-2xl",
+const pixelMap = {
+  sm: 32,
+  md: 40,
+  lg: 56,
+  xl: 80,
+  "2xl": 112,
 };
 
 const dotSizeMap = {
@@ -28,43 +27,53 @@ const dotSizeMap = {
   "2xl": "w-5 h-5",
 };
 
-const pixelMap = {
-  sm: 32,
-  md: 40,
-  lg: 56,
-  xl: 80,
-  "2xl": 112,
-};
-
-export default function Avatar({ src, name, size = "md", online, className = "" }: AvatarProps) {
-  const initials = name
+export default function Avatar({
+  src,
+  name = "User",
+  size = "md",
+  online,
+  className = "",
+}: AvatarProps) {
+  const safeName = typeof name === "string" && name.trim() ? name : "User";
+  const initials = safeName
     .split(" ")
+    .filter(Boolean)
     .map((w) => w[0])
     .join("")
     .toUpperCase()
-    .slice(0, 2);
+    .slice(0, 2) || "SB";
 
-  const [imgError, setImgError] = React.useState(false);
-  const px = pixelMap[size];
+  const [imgError, setImgError] = useState(false);
+  const px = pixelMap[size] || 40;
 
   return (
     <div
-      className={`relative inline-flex shrink-0 ${sizeMap[size]} rounded-full ${className}`}
-      style={{ width: px, height: px, minWidth: px, minHeight: px, maxWidth: px, maxHeight: px }}
+      className={`relative inline-flex shrink-0 rounded-full select-none ${className}`}
+      style={{
+        width: `${px}px`,
+        height: `${px}px`,
+        minWidth: `${px}px`,
+        minHeight: `${px}px`,
+        maxWidth: `${px}px`,
+        maxHeight: `${px}px`,
+      }}
     >
-      <div
-        className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-sb-green text-white font-semibold ring-2 ring-white select-none"
-      >
+      <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-sb-green text-white font-semibold ring-2 ring-white">
         {src && !imgError ? (
           <img
             src={src}
-            alt={name}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            alt={safeName}
             className="w-full h-full object-cover rounded-full"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
             onError={() => setImgError(true)}
           />
         ) : (
-          <span>{initials}</span>
+          <span
+            style={{ fontSize: `${Math.max(10, Math.floor(px * 0.35))}px` }}
+            className="font-bold tracking-tight"
+          >
+            {initials}
+          </span>
         )}
       </div>
       {online !== undefined && (
