@@ -41,13 +41,15 @@ export default function SignInPage() {
     <div className="min-h-screen bg-gradient-to-br from-sb-bg via-white to-primary-50 flex items-center justify-center p-6">
       <div className="w-full max-w-md animate-fade-in">
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2.5 group">
-            <img
-              src="/logo.png"
-              alt="SkillBridge Logo"
-              className="w-10 h-10 rounded-xl object-contain shadow-md group-hover:scale-105 transition-transform"
-            />
-            <span className="font-bold text-xl text-sb-dark tracking-tight">SkillBridge</span>
+          <Link href="/" className="inline-flex items-center gap-3 group">
+            <div className="w-12 h-12 rounded-2xl bg-white p-1.5 shadow-md border border-border group-hover:scale-105 transition-transform flex items-center justify-center">
+              <img
+                src="/logo.png"
+                alt="SkillBridge Logo"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <span className="font-bold text-2xl text-sb-dark tracking-tight">SkillBridge</span>
           </Link>
           <h1 className="mt-4 text-2xl font-bold text-sb-dark">Welcome back</h1>
           <p className="text-sm text-text-secondary mt-1">Sign in to your SkillBridge account</p>
