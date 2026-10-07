@@ -275,7 +275,7 @@ export default function SessionsPage() {
 
                 <div className="flex items-center justify-between pt-2">
                   <span className="text-[11px] text-white/60">
-                    {savedNotesToast ? "✓ Saved to project!" : "Markdown supported"}
+                    {savedNotesToast ? "Saved to project!" : "Markdown supported"}
                   </span>
                   <button
                     onClick={handleSaveNotes}

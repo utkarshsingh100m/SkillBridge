@@ -90,7 +90,7 @@ export default function MessagesPage() {
         id: `reply_${Date.now()}`,
         senderId: activeConv.participantId,
         senderName: activeConv.participantName,
-        content: `Got it! I will look into that right away. You are on track for Build with Bharat 4.0. Keep pushing! 🚀`,
+        content: `Got it! I will look into that right away. You are on track for Build with Bharat 4.0. Keep pushing!`,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         isOwn: false,
       };

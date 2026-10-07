@@ -346,7 +346,7 @@ export default function TeamPage() {
                       onClick={() => moveTask(task.id, "done")}
                       className="w-full mt-1 py-1 text-[11px] text-white font-semibold bg-sb-green rounded-lg hover:bg-sb-dark transition-all text-center"
                     >
-                      Mark Complete ✓
+                      Mark Complete
                     </button>
                   </div>
                 ))}

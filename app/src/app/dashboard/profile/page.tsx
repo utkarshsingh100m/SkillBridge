@@ -25,6 +25,8 @@ import {
   Check,
   Upload,
   Image as ImageIcon,
+  Trophy,
+  Zap,
 } from "lucide-react";
 import Avatar from "@/components/ui/Avatar";
 import { currentUser as defaultUser } from "@/lib/data";
@@ -796,7 +798,7 @@ export default function ProfilePage() {
             <div className="space-y-3">
               <div className="flex items-center gap-3 p-3 bg-amber-50/60 border border-amber-200/60 rounded-2xl">
                 <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
-                  🏆
+                  <Trophy size={18} />
                 </div>
                 <div>
                   <h5 className="text-xs font-bold text-amber-900">Bharat 4.0 Contender</h5>
@@ -806,7 +808,7 @@ export default function ProfilePage() {
 
               <div className="flex items-center gap-3 p-3 bg-emerald-50/60 border border-emerald-200/60 rounded-2xl">
                 <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
-                  ⚡
+                  <Zap size={18} />
                 </div>
                 <div>
                   <h5 className="text-xs font-bold text-emerald-900">Sprint MVP</h5>

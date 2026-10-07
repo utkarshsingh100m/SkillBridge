@@ -467,12 +467,12 @@ export const skillGaps: SkillGap[] = [
   {
     role: "AI/ML Mentor",
     description: "Needed for model development",
-    icon: "🤖",
+    icon: "bot",
   },
   {
     role: "Pitch Mentor",
     description: "Needed for presentation and product story",
-    icon: "🎤",
+    icon: "mic",
   },
 ];
 

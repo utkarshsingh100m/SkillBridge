@@ -385,10 +385,10 @@ const DOMAIN_FILTERS = [
 
 const STATUS_TABS = [
   { id: "all", label: "All Hackathons", icon: Trophy },
-  { id: "ongoing", label: "🔴 Ongoing / Live", icon: Flame },
-  { id: "upcoming", label: "🟢 Upcoming", icon: Calendar },
-  { id: "closing_soon", label: "⏳ Closing Soon", icon: Clock },
-  { id: "saved", label: "⭐ Saved / Bookmarked", icon: Bookmark },
+  { id: "ongoing", label: "Ongoing / Live", icon: Flame },
+  { id: "upcoming", label: "Upcoming", icon: Calendar },
+  { id: "closing_soon", label: "Closing Soon", icon: Clock },
+  { id: "saved", label: "Saved", icon: Bookmark },
 ];
 
 export default function HackathonsPage() {

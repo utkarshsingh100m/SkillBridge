@@ -9,6 +9,13 @@ import {
   ArrowRight,
   Search,
   MoreVertical,
+  Users,
+  FolderKanban,
+  MessageSquare,
+  Calendar,
+  Bot,
+  Mic,
+  AlertCircle,
 } from "lucide-react";
 import Avatar from "@/components/ui/Avatar";
 import Badge from "@/components/ui/Badge";
@@ -49,7 +56,7 @@ export default function DashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-sb-dark">
-            Good afternoon, {currentUser.name.split(" ")[0]} 👋
+            Good afternoon, {currentUser.name.split(" ")[0]}
           </h1>
           <p className="text-sm text-text-secondary mt-0.5">
             Let&apos;s make progress on your project.
@@ -126,7 +133,8 @@ export default function DashboardPage() {
               .filter((r) => !r.filled)
               .map((role) => (
                 <Badge key={role.title} variant="amber" size="sm">
-                  🔴 {role.title}
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5 inline-block" />
+                  {role.title}
                 </Badge>
               ))}
           </div>
@@ -169,7 +177,9 @@ export default function DashboardPage() {
                 className="flex items-center justify-between p-3 rounded-xl bg-amber-50/50 border border-amber-100"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-xl">{gap.icon}</span>
+                  <div className="w-9 h-9 rounded-lg bg-amber-100/80 text-amber-800 flex items-center justify-center font-medium text-xs shrink-0">
+                    {gap.role.includes("AI") ? <Bot size={18} /> : <Mic size={18} />}
+                  </div>
                   <div>
                     <p className="text-sm font-medium text-sb-dark">{gap.role}</p>
                     <p className="text-xs text-text-muted">{gap.description}</p>
@@ -194,26 +204,31 @@ export default function DashboardPage() {
           <h3 className="font-semibold text-sb-dark mb-4">Quick Actions</h3>
           <div className="space-y-3">
             {[
-              { label: "Find Teammates", desc: "Search for students with matching skills", href: "/dashboard/find-teammates", icon: "👥" },
-              { label: "Browse Projects", desc: "Discover open projects looking for team members", href: "/dashboard/projects", icon: "📋" },
-              { label: "View Messages", desc: "Check your conversations", href: "/dashboard/messages", icon: "💬" },
-              { label: "Schedule Session", desc: "Book a mentoring session", href: "/dashboard/sessions", icon: "📅" },
-            ].map((action) => (
-              <Link
-                key={action.label}
-                href={action.href}
-                className="flex items-center gap-3 p-3 rounded-xl border border-border hover:border-sb-pale hover:bg-surface-hover transition-all group"
-              >
-                <span className="text-xl">{action.icon}</span>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-sb-dark group-hover:text-sb-green transition-colors">
-                    {action.label}
-                  </p>
-                  <p className="text-xs text-text-muted">{action.desc}</p>
-                </div>
-                <ArrowRight size={14} className="text-text-muted group-hover:text-sb-green transition-colors" />
-              </Link>
-            ))}
+              { label: "Find Teammates", desc: "Search for students with matching skills", href: "/dashboard/find-teammates", icon: Users },
+              { label: "Browse Projects", desc: "Discover open projects looking for team members", href: "/dashboard/projects", icon: FolderKanban },
+              { label: "View Messages", desc: "Check your conversations", href: "/dashboard/messages", icon: MessageSquare },
+              { label: "Schedule Session", desc: "Book a mentoring session", href: "/dashboard/sessions", icon: Calendar },
+            ].map((action) => {
+              const Icon = action.icon;
+              return (
+                <Link
+                  key={action.label}
+                  href={action.href}
+                  className="flex items-center gap-3 p-3 rounded-xl border border-border hover:border-sb-pale hover:bg-surface-hover transition-all group"
+                >
+                  <div className="w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-sb-dark flex items-center justify-center shrink-0 group-hover:bg-sb-green/10 group-hover:text-sb-green transition-colors">
+                    <Icon size={18} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-sb-dark group-hover:text-sb-green transition-colors">
+                      {action.label}
+                    </p>
+                    <p className="text-xs text-text-muted">{action.desc}</p>
+                  </div>
+                  <ArrowRight size={14} className="text-text-muted group-hover:text-sb-green transition-colors" />
+                </Link>
+              );
+            })}
           </div>
         </div>
       </div>
