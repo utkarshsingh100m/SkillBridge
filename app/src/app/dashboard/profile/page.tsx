@@ -23,6 +23,8 @@ import {
   Terminal,
   Share2,
   Check,
+  Upload,
+  Image as ImageIcon,
 } from "lucide-react";
 import Avatar from "@/components/ui/Avatar";
 import { currentUser as defaultUser } from "@/lib/data";
@@ -77,7 +79,72 @@ const bannerGradients: Record<string, { name: string; bgClass: string }> = {
     name: "Deep Ocean",
     bgClass: "bg-gradient-to-r from-blue-950 via-teal-950 to-emerald-950",
   },
+  violet: {
+    name: "Electric Violet",
+    bgClass: "bg-gradient-to-r from-purple-950 via-indigo-900 to-blue-950",
+  },
+  aurora: {
+    name: "Aurora Borealis",
+    bgClass: "bg-gradient-to-r from-teal-950 via-emerald-900 to-cyan-950",
+  },
 };
+
+const sampleBannerImages = [
+  {
+    id: "b1",
+    name: "AI Neural Matrix",
+    category: "AI & Tech",
+    src: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: "b2",
+    name: "Cyber Circuit",
+    category: "Hardware & IoT",
+    src: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=1400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: "b3",
+    name: "Silicon Night",
+    category: "Developer",
+    src: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=1400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: "b4",
+    name: "Abstract Neon",
+    category: "Abstract",
+    src: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: "b5",
+    name: "Geometric Tech",
+    category: "Design",
+    src: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=1400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: "b6",
+    name: "Dark Code Terminal",
+    category: "Developer",
+    src: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=1400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: "b7",
+    name: "Quantum Deep Space",
+    category: "Science",
+    src: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: "b8",
+    name: "Cyber Microchips",
+    category: "Hardware & IoT",
+    src: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: "b9",
+    name: "Bharat Emerald Mesh",
+    category: "Abstract",
+    src: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?w=1400&auto=format&fit=crop&q=80",
+  },
+];
 
 const presetAvatars = [
   { id: "p1", name: "Praveen", src: "/avatars/praveen.jpg" },
@@ -94,7 +161,10 @@ export default function ProfilePage() {
     ...defaultUser,
     openToHackathons: true,
     openToRoles: "Full-Stack Dev, ML Engineer, Tech Lead",
+    bannerType: "image" as "gradient" | "image",
     bannerKey: "emerald",
+    customBannerUrl:
+      "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1400&auto=format&fit=crop&q=80",
     portfolioUrl: "https://praveenmishra.dev",
     linkedinUrl: "https://linkedin.com/in/praveenmishra-dev",
     githubUrl: "https://github.com/praveenmishra",
@@ -176,7 +246,7 @@ export default function ProfilePage() {
   // Modal & Form state
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
-    "general" | "photo" | "languages" | "skills" | "experience" | "socials"
+    "general" | "photo" | "banner" | "languages" | "skills" | "experience" | "socials"
   >("general");
   const [savedSuccess, setSavedSuccess] = useState(false);
 
@@ -188,7 +258,10 @@ export default function ProfilePage() {
   const [formOpenToWork, setFormOpenToWork] = useState(user.openToHackathons);
   const [formOpenToRoles, setFormOpenToRoles] = useState(user.openToRoles);
   const [formAvatar, setFormAvatar] = useState(user.avatar);
-  const [formBannerKey, setFormBannerKey] = useState(user.bannerKey);
+  const [formBannerType, setFormBannerType] = useState<"gradient" | "image">(user.bannerType || "image");
+  const [formBannerKey, setFormBannerKey] = useState(user.bannerKey || "emerald");
+  const [formCustomBannerUrl, setFormCustomBannerUrl] = useState(user.customBannerUrl || "");
+  const [bannerCategoryFilter, setBannerCategoryFilter] = useState<string>("All");
 
   const [formGithub, setFormGithub] = useState(user.githubUrl);
   const [formLinkedin, setFormLinkedin] = useState(user.linkedinUrl);
@@ -224,7 +297,7 @@ export default function ProfilePage() {
     }
   }, []);
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (defaultTab: typeof activeTab = "general") => {
     setFormName(user.name);
     setFormHeadline(user.headline);
     setFormBio(user.bio);
@@ -232,12 +305,18 @@ export default function ProfilePage() {
     setFormOpenToWork(user.openToHackathons);
     setFormOpenToRoles(user.openToRoles);
     setFormAvatar(user.avatar);
+    setFormBannerType(user.bannerType || "image");
     setFormBannerKey(user.bannerKey || "emerald");
+    setFormCustomBannerUrl(
+      user.customBannerUrl ||
+        "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1400&auto=format&fit=crop&q=80"
+    );
     setFormGithub(user.githubUrl);
     setFormLinkedin(user.linkedinUrl);
     setFormPortfolio(user.portfolioUrl);
     setFormLeetcode(user.leetcodeUrl);
     setSavedSuccess(false);
+    setActiveTab(defaultTab);
     setEditModalOpen(true);
   };
 
@@ -251,7 +330,9 @@ export default function ProfilePage() {
       openToHackathons: formOpenToWork,
       openToRoles: formOpenToRoles,
       avatar: formAvatar,
+      bannerType: formBannerType,
       bannerKey: formBannerKey,
+      customBannerUrl: formCustomBannerUrl,
       githubUrl: formGithub,
       linkedinUrl: formLinkedin,
       portfolioUrl: formPortfolio,
@@ -321,13 +402,27 @@ export default function ProfilePage() {
     setNewExpDesc("");
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         if (typeof reader.result === "string") {
           setFormAvatar(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleBannerUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === "string") {
+          setFormCustomBannerUrl(reader.result);
+          setFormBannerType("image");
         }
       };
       reader.readAsDataURL(file);
@@ -341,24 +436,34 @@ export default function ProfilePage() {
     <div className="max-w-5xl mx-auto space-y-8 animate-fade-in pb-16">
       {/* ─── Profile Card (LinkedIn Style) ─── */}
       <div className="bg-white rounded-3xl border border-border shadow-sm overflow-hidden">
-        {/* Cover Banner */}
+        {/* Cover Banner with Custom Image or Gradient Theme */}
         <div
-          className={`h-44 w-full ${bannerClass} relative flex items-start justify-between p-6`}
+          className={`h-48 w-full relative flex items-start justify-between p-6 overflow-hidden ${
+            user.bannerType === "gradient" ? bannerClass : "bg-slate-900"
+          }`}
         >
+          {user.bannerType === "image" && user.customBannerUrl && (
+            <img
+              src={user.customBannerUrl}
+              alt="Profile Cover Banner"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          )}
+
+          {/* Dark scrim overlay for contrast */}
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-[0.5px]" />
+
           <div className="flex items-center gap-2 relative z-10">
-            <span className="bg-white/20 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-semibold text-white flex items-center gap-1.5 shadow-sm">
+            <span className="bg-black/40 backdrop-blur-md px-3.5 py-1 rounded-full text-xs font-semibold text-white flex items-center gap-1.5 shadow-sm border border-white/10">
               <ShieldCheck size={14} className="text-sb-wash" /> Build With Bharat 4.0 Verified
             </span>
           </div>
 
           <button
-            onClick={() => {
-              setActiveTab("photo");
-              handleOpenModal();
-            }}
-            className="px-3.5 py-1.5 bg-black/40 hover:bg-black/60 backdrop-blur-md text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm cursor-pointer relative z-10"
+            onClick={() => handleOpenModal("banner")}
+            className="px-3.5 py-1.5 bg-black/50 hover:bg-black/70 backdrop-blur-md text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md border border-white/10 cursor-pointer relative z-10"
           >
-            <Palette size={13} /> Change Cover &amp; Photo
+            <Palette size={13} /> Change Banner &amp; Photo
           </button>
         </div>
 
@@ -372,10 +477,7 @@ export default function ProfilePage() {
                   <Avatar src={user.avatar} name={user.name} size="2xl" />
                 </div>
                 <button
-                  onClick={() => {
-                    setActiveTab("photo");
-                    handleOpenModal();
-                  }}
+                  onClick={() => handleOpenModal("photo")}
                   className="absolute bottom-0 right-0 p-2 bg-sb-dark hover:bg-sb-green text-white rounded-full shadow-md transition-all group-hover:scale-110 cursor-pointer z-20"
                   title="Update Profile Photo"
                 >
@@ -411,7 +513,7 @@ export default function ProfilePage() {
             {/* Top Action Buttons */}
             <div className="flex items-center gap-2.5 self-start md:self-auto shrink-0">
               <button
-                onClick={handleOpenModal}
+                onClick={() => handleOpenModal("general")}
                 className="px-4 py-2.5 bg-sb-dark hover:bg-sb-green text-white text-xs font-semibold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
               >
                 <Edit3 size={14} /> Customize Profile
@@ -450,10 +552,7 @@ export default function ProfilePage() {
               </div>
 
               <button
-                onClick={() => {
-                  setActiveTab("general");
-                  handleOpenModal();
-                }}
+                onClick={() => handleOpenModal("general")}
                 className="text-xs font-bold text-sb-green hover:underline shrink-0 cursor-pointer"
               >
                 Edit Preferences →
@@ -534,10 +633,7 @@ export default function ProfilePage() {
                 <h3 className="text-base font-bold text-sb-dark">Known Programming Languages</h3>
               </div>
               <button
-                onClick={() => {
-                  setActiveTab("languages");
-                  handleOpenModal();
-                }}
+                onClick={() => handleOpenModal("languages")}
                 className="text-xs font-bold text-sb-green hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <Plus size={13} /> Add Language
@@ -580,10 +676,7 @@ export default function ProfilePage() {
                 <h3 className="text-base font-bold text-sb-dark">Technical Skills &amp; Stack</h3>
               </div>
               <button
-                onClick={() => {
-                  setActiveTab("skills");
-                  handleOpenModal();
-                }}
+                onClick={() => handleOpenModal("skills")}
                 className="text-xs font-bold text-sb-green hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <Plus size={13} /> Add Skill
@@ -652,10 +745,7 @@ export default function ProfilePage() {
                 <h3 className="text-base font-bold text-sb-dark">Experience &amp; Hackathons</h3>
               </div>
               <button
-                onClick={() => {
-                  setActiveTab("experience");
-                  handleOpenModal();
-                }}
+                onClick={() => handleOpenModal("experience")}
                 className="text-xs font-bold text-sb-green hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <Plus size={13} /> Add Experience
@@ -779,7 +869,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* ─── Multi-Tab Edit Modal ─── */}
+      {/* ─── Multi-Tab Edit Modal with Banner Customizer ─── */}
       {editModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-white rounded-3xl max-w-2xl w-full border border-border shadow-2xl overflow-hidden animate-scale-up flex flex-col max-h-[90vh]">
@@ -801,7 +891,8 @@ export default function ProfilePage() {
             <div className="flex items-center px-6 border-b border-border bg-surface/50 overflow-x-auto shrink-0 gap-2 py-2">
               {[
                 { id: "general", label: "Basic Info" },
-                { id: "photo", label: "Photo & Banner" },
+                { id: "banner", label: "Cover Banner" },
+                { id: "photo", label: "Profile Photo" },
                 { id: "languages", label: "Languages" },
                 { id: "skills", label: "Skills" },
                 { id: "experience", label: "Experience" },
@@ -908,10 +999,275 @@ export default function ProfilePage() {
                 </div>
               )}
 
-              {/* 2. Photo & Banner Tab */}
+              {/* 2. Cover Banner Tab */}
+              {activeTab === "banner" && (
+                <div className="space-y-6">
+                  {/* Live Banner Preview */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-sb-dark uppercase tracking-wider">
+                        Live Banner Preview
+                      </label>
+                      <span className="text-[11px] text-text-muted">
+                        Preview of how your profile header will look
+                      </span>
+                    </div>
+                    
+                    <div className="relative rounded-2xl overflow-hidden h-28 w-full border border-border shadow-inner bg-slate-950 flex items-start justify-between p-3.5">
+                      {formBannerType === "image" && formCustomBannerUrl ? (
+                        <img
+                          src={formCustomBannerUrl}
+                          alt="Banner Preview"
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div
+                          className={`absolute inset-0 ${
+                            bannerGradients[formBannerKey]?.bgClass || bannerGradients.emerald.bgClass
+                          }`}
+                        />
+                      )}
+                      
+                      {/* Scrim overlay */}
+                      <div className="absolute inset-0 bg-black/30" />
+                      
+                      {/* Badge in preview */}
+                      <div className="relative z-10 flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-semibold text-white border border-white/10">
+                        <ShieldCheck size={12} className="text-sb-wash" /> Verified Finalist
+                      </div>
+
+                      {/* Mock avatar cutout in corner */}
+                      <div className="relative z-10 self-end -mb-1">
+                        <div className="w-10 h-10 rounded-full ring-2 ring-white shadow-md overflow-hidden bg-white">
+                          <Avatar src={formAvatar} name={formName} size="sm" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Banner Style Toggle */}
+                  <div>
+                    <label className="block text-xs font-bold text-sb-dark uppercase tracking-wider mb-2">
+                      Cover Banner Style
+                    </label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setFormBannerType("image")}
+                        className={`p-3 rounded-2xl border-2 text-left transition-all cursor-pointer ${
+                          formBannerType === "image"
+                            ? "border-sb-green bg-sb-bg shadow-sm"
+                            : "border-border hover:border-sb-light"
+                        }`}
+                      >
+                        <span className="text-xs font-bold text-sb-dark flex items-center gap-1.5">
+                          <ImageIcon size={14} className="text-sb-green" /> Custom Wallpaper / Photos
+                        </span>
+                        <p className="text-[11px] text-text-muted mt-0.5">
+                          Upload file, paste image URL, or pick sample
+                        </p>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setFormBannerType("gradient")}
+                        className={`p-3 rounded-2xl border-2 text-left transition-all cursor-pointer ${
+                          formBannerType === "gradient"
+                            ? "border-sb-green bg-sb-bg shadow-sm"
+                            : "border-border hover:border-sb-light"
+                        }`}
+                      >
+                        <span className="text-xs font-bold text-sb-dark flex items-center gap-1.5">
+                          <Palette size={14} className="text-sb-green" /> Gradient Schemes
+                        </span>
+                        <p className="text-[11px] text-text-muted mt-0.5">
+                          Curated hackathon dynamic gradients
+                        </p>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Image Options: Upload, URL, Samples */}
+                  {formBannerType === "image" && (
+                    <div className="space-y-5">
+                      {/* Upload Box */}
+                      <div className="p-4 bg-surface rounded-2xl border border-dashed border-border hover:border-sb-green transition-colors space-y-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-sb-bg text-sb-green flex items-center justify-center shrink-0 border border-sb-wash">
+                              <Upload size={18} />
+                            </div>
+                            <div>
+                              <span className="text-xs font-bold text-sb-dark block">
+                                Upload Custom Banner Image
+                              </span>
+                              <p className="text-[11px] text-text-muted">
+                                Recommended: 1400×400px (PNG, JPG, WebP up to 10MB)
+                              </p>
+                            </div>
+                          </div>
+                          
+                          <label className="px-4 py-2 bg-sb-dark hover:bg-sb-green text-white text-xs font-semibold rounded-xl cursor-pointer inline-flex items-center justify-center gap-1.5 transition-all shadow-xs shrink-0">
+                            <Camera size={13} /> Browse Files
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={handleBannerUpload}
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+
+                        {/* Direct Image URL input */}
+                        <div className="pt-2 border-t border-border/60">
+                          <label className="block text-[11px] font-semibold text-text-muted mb-1.5">
+                            Or Use Direct Image URL:
+                          </label>
+                          <div className="flex gap-2">
+                            <input
+                              type="url"
+                              placeholder="https://images.unsplash.com/photo-..."
+                              value={formCustomBannerUrl}
+                              onChange={(e) => setFormCustomBannerUrl(e.target.value)}
+                              className="flex-1 p-2.5 bg-white rounded-xl text-xs border border-border focus:outline-none focus:border-sb-green"
+                            />
+                            {formCustomBannerUrl && (
+                              <button
+                                type="button"
+                                onClick={() => setFormCustomBannerUrl("")}
+                                className="px-3 py-2 text-xs text-text-muted hover:text-red-500 bg-white border border-border rounded-xl cursor-pointer"
+                                title="Clear URL"
+                              >
+                                Clear
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Sample Wallpapers Section */}
+                      <div className="space-y-3">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                          <span className="text-xs font-bold text-sb-dark uppercase tracking-wider block">
+                            Sample Tech &amp; Hackathon Banners:
+                          </span>
+                          
+                          {/* Category Filter Pills */}
+                          <div className="flex items-center gap-1 overflow-x-auto pb-1">
+                            {["All", "AI & Tech", "Developer", "Hardware & IoT", "Design", "Abstract"].map(
+                              (cat) => (
+                                <button
+                                  key={cat}
+                                  type="button"
+                                  onClick={() => setBannerCategoryFilter(cat)}
+                                  className={`px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                                    bannerCategoryFilter === cat
+                                      ? "bg-sb-dark text-white shadow-2xs"
+                                      : "bg-surface text-text-muted hover:bg-surface-hover hover:text-sb-dark border border-border/60"
+                                  }`}
+                                >
+                                  {cat}
+                                </button>
+                              )
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Banner Samples Grid */}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-64 overflow-y-auto pr-1">
+                          {sampleBannerImages
+                            .filter(
+                              (s) =>
+                                bannerCategoryFilter === "All" ||
+                                s.category === bannerCategoryFilter
+                            )
+                            .map((sample) => {
+                              const isSelected =
+                                formCustomBannerUrl === sample.src && formBannerType === "image";
+                              return (
+                                <button
+                                  key={sample.id}
+                                  type="button"
+                                  onClick={() => {
+                                    setFormCustomBannerUrl(sample.src);
+                                    setFormBannerType("image");
+                                  }}
+                                  className={`relative rounded-2xl overflow-hidden border-2 text-left h-24 group transition-all cursor-pointer ${
+                                    isSelected
+                                      ? "border-sb-green ring-2 ring-sb-green/40 shadow-md"
+                                      : "border-border hover:border-sb-light"
+                                  }`}
+                                >
+                                  <img
+                                    src={sample.src}
+                                    alt={sample.name}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                    loading="lazy"
+                                  />
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-2">
+                                    <span className="text-[10px] text-sb-wash/90 font-mono uppercase tracking-wider">
+                                      {sample.category}
+                                    </span>
+                                    <span className="text-[11px] font-bold text-white drop-shadow-sm truncate">
+                                      {sample.name}
+                                    </span>
+                                  </div>
+                                  {isSelected && (
+                                    <span className="absolute top-1.5 right-1.5 bg-sb-green text-white rounded-full p-1 shadow-xs">
+                                      <Check size={12} />
+                                    </span>
+                                  )}
+                                </button>
+                              );
+                            })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Gradient Themes */}
+                  {formBannerType === "gradient" && (
+                    <div className="space-y-3">
+                      <span className="text-xs font-bold text-sb-dark uppercase tracking-wider block">
+                        Select Gradient Scheme:
+                      </span>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {Object.entries(bannerGradients).map(([key, b]) => {
+                          const isSelected =
+                            formBannerKey === key && formBannerType === "gradient";
+                          return (
+                            <button
+                              key={key}
+                              type="button"
+                              onClick={() => {
+                                setFormBannerKey(key);
+                                setFormBannerType("gradient");
+                              }}
+                              className={`p-3 rounded-2xl border-2 text-left transition-all relative overflow-hidden cursor-pointer ${
+                                isSelected
+                                  ? "border-sb-green shadow-sm ring-2 ring-sb-green/20 bg-sb-bg/30"
+                                  : "border-border hover:border-sb-light bg-surface"
+                              }`}
+                            >
+                              <div className={`h-12 rounded-xl ${b.bgClass} mb-2 shadow-inner`} />
+                              <span className="text-xs font-bold text-sb-dark block">{b.name}</span>
+                              {isSelected && (
+                                <span className="absolute top-2 right-2 bg-white rounded-full p-0.5 text-sb-green shadow-xs">
+                                  <Check size={12} />
+                                </span>
+                              )}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 3. Photo Tab */}
               {activeTab === "photo" && (
                 <div className="space-y-6">
-                  {/* Photo Customizer */}
                   <div>
                     <label className="block text-xs font-bold text-sb-dark uppercase tracking-wider mb-3">
                       Profile Photo
@@ -919,12 +1275,12 @@ export default function ProfilePage() {
                     <div className="flex items-center gap-4 mb-4">
                       <Avatar src={formAvatar} name={formName} size="xl" />
                       <div className="space-y-2">
-                        <label className="px-3.5 py-2 bg-sb-dark hover:bg-sb-green text-white text-xs font-semibold rounded-xl cursor-pointer inline-flex items-center gap-1.5 transition-all">
+                        <label className="px-3.5 py-2 bg-sb-dark hover:bg-sb-green text-white text-xs font-semibold rounded-xl cursor-pointer inline-flex items-center gap-1.5 transition-all shadow-xs">
                           <Camera size={14} /> Upload Custom Photo
                           <input
                             type="file"
                             accept="image/*"
-                            onChange={handleFileUpload}
+                            onChange={handleAvatarUpload}
                             className="hidden"
                           />
                         </label>
@@ -955,39 +1311,10 @@ export default function ProfilePage() {
                       ))}
                     </div>
                   </div>
-
-                  {/* Banner Theme Selector */}
-                  <div className="pt-4 border-t border-border">
-                    <label className="block text-xs font-bold text-sb-dark uppercase tracking-wider mb-3">
-                      Cover Banner Theme
-                    </label>
-                    <div className="grid grid-cols-2 gap-3">
-                      {Object.entries(bannerGradients).map(([key, b]) => (
-                        <button
-                          key={key}
-                          type="button"
-                          onClick={() => setFormBannerKey(key)}
-                          className={`p-3 rounded-2xl border-2 text-left transition-all relative overflow-hidden cursor-pointer ${
-                            formBannerKey === key
-                              ? "border-sb-green shadow-sm"
-                              : "border-border hover:border-sb-light"
-                          }`}
-                        >
-                          <div className={`h-8 rounded-lg ${b.bgClass} mb-2`} />
-                          <span className="text-xs font-bold text-sb-dark">{b.name}</span>
-                          {formBannerKey === key && (
-                            <span className="absolute top-2 right-2 bg-white rounded-full p-0.5 text-sb-green shadow-xs">
-                              <Check size={12} />
-                            </span>
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               )}
 
-              {/* 3. Languages Tab */}
+              {/* 4. Languages Tab */}
               {activeTab === "languages" && (
                 <div className="space-y-5">
                   <form
@@ -1064,7 +1391,7 @@ export default function ProfilePage() {
                 </div>
               )}
 
-              {/* 4. Skills Tab */}
+              {/* 5. Skills Tab */}
               {activeTab === "skills" && (
                 <div className="space-y-5">
                   <form
@@ -1104,7 +1431,6 @@ export default function ProfilePage() {
                     </button>
                   </form>
 
-                  {/* Skills lists */}
                   {(["frameworks", "ai_ml", "cloud_devops", "domains"] as const).map((cat) => (
                     <div key={cat} className="space-y-2">
                       <span className="text-xs font-bold text-text-muted uppercase tracking-wider">
@@ -1132,7 +1458,7 @@ export default function ProfilePage() {
                 </div>
               )}
 
-              {/* 5. Experience Tab */}
+              {/* 6. Experience Tab */}
               {activeTab === "experience" && (
                 <div className="space-y-5">
                   <form
@@ -1207,7 +1533,7 @@ export default function ProfilePage() {
                 </div>
               )}
 
-              {/* 6. Social Links Tab */}
+              {/* 7. Social Links Tab */}
               {activeTab === "socials" && (
                 <div className="space-y-4">
                   <div>
