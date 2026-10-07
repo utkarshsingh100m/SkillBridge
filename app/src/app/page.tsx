@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -14,6 +15,8 @@ import {
   Zap,
   Shield,
   ChevronRight,
+  Menu,
+  X,
 } from "lucide-react";
 
 const features = [
@@ -54,6 +57,8 @@ const stats = [
 ];
 
 export default function LandingPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -72,10 +77,10 @@ export default function LandingPage() {
             <a href="#features" className="hover:text-sb-dark transition-colors">Features</a>
             <a href="#how-it-works" className="hover:text-sb-dark transition-colors">For Students</a>
             <a href="#mentors" className="hover:text-sb-dark transition-colors">For Mentors</a>
-            <a href="#" className="hover:text-sb-dark transition-colors">Hackathons</a>
+            <Link href="/dashboard/hackathons" className="hover:text-sb-dark transition-colors">Hackathons</Link>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             <Link
               href="/auth/signin"
               className="text-sm font-medium text-text-secondary hover:text-sb-dark transition-colors"
@@ -89,7 +94,69 @@ export default function LandingPage() {
               Get Started <ArrowRight size={14} />
             </Link>
           </div>
+
+          {/* Mobile Menu Hamburger */}
+          <div className="flex md:hidden items-center gap-2">
+            <Link
+              href="/auth/signin"
+              className="text-xs font-semibold px-3 py-1.5 text-text-secondary hover:text-sb-dark"
+            >
+              Sign in
+            </Link>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+              className="p-2 rounded-xl text-text-secondary hover:bg-surface hover:text-sb-dark transition-colors"
+            >
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Navigation Dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-b border-border bg-white px-6 py-4 space-y-3 shadow-lg animate-fade-in">
+            <div className="flex flex-col space-y-2.5 text-sm font-medium text-text-secondary">
+              <a
+                href="#features"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 hover:text-sb-dark"
+              >
+                Features
+              </a>
+              <a
+                href="#how-it-works"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 hover:text-sb-dark"
+              >
+                For Students
+              </a>
+              <a
+                href="#mentors"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 hover:text-sb-dark"
+              >
+                For Mentors
+              </a>
+              <Link
+                href="/dashboard/hackathons"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 hover:text-sb-dark"
+              >
+                Hackathons Hub
+              </Link>
+            </div>
+            <div className="pt-2 border-t border-border flex flex-col gap-2">
+              <Link
+                href="/auth/signup"
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full text-center py-2.5 bg-sb-dark text-white text-sm font-semibold rounded-xl hover:bg-sb-green transition-all"
+              >
+                Get Started
+              </Link>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero */}

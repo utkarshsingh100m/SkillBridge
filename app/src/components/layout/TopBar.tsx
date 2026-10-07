@@ -13,6 +13,7 @@ import {
   Sparkles,
   ShieldCheck,
   CheckCircle2,
+  Menu,
 } from "lucide-react";
 import Avatar from "@/components/ui/Avatar";
 import { currentUser as defaultUser } from "@/lib/data";
@@ -110,15 +111,26 @@ export default function TopBar() {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-border flex items-center justify-between px-6 sticky top-0 z-30 shadow-xs">
-      {/* Search Input */}
-      <div className="relative w-80 md:w-96">
-        <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" />
-        <input
-          type="text"
-          placeholder="Search mentors, projects, teammates..."
-          className="w-full pl-9 pr-4 py-2 rounded-xl bg-surface border border-border text-xs focus:outline-none focus:ring-2 focus:ring-sb-green/20 focus:border-sb-green transition-all"
-        />
+    <header className="h-16 bg-white border-b border-border flex items-center justify-between px-4 sm:px-6 sticky top-0 z-30 shadow-xs">
+      {/* Left: Mobile Menu Trigger + Search */}
+      <div className="flex items-center gap-2 flex-1 max-w-md mr-3">
+        <button
+          onClick={() => window.dispatchEvent(new Event("open_mobile_sidebar"))}
+          aria-label="Open Navigation Menu"
+          className="p-2 -ml-1 rounded-xl text-text-secondary hover:bg-surface hover:text-sb-dark transition-colors md:hidden shrink-0 cursor-pointer"
+        >
+          <Menu size={20} />
+        </button>
+
+        {/* Search Input */}
+        <div className="relative flex-1">
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted" />
+          <input
+            type="text"
+            placeholder="Search mentors, projects, teammates..."
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-surface border border-border text-xs focus:outline-none focus:ring-2 focus:ring-sb-green/20 focus:border-sb-green transition-all"
+          />
+        </div>
       </div>
 
       {/* Right Side Actions */}
