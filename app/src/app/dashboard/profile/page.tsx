@@ -463,50 +463,53 @@ export default function ProfilePage() {
 
         {/* Profile Details Header */}
         <div className="px-8 pb-8 pt-0 relative">
-          {/* Avatar row: pulls up to overlap banner by half the avatar height */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-14 mb-6">
-            <div className="flex flex-col md:flex-row md:items-end gap-5">
-              {/* Profile Avatar with Camera Button */}
-              <div className="relative group shrink-0" style={{ width: "112px", height: "112px" }}>
-                <div className="w-28 h-28 rounded-full ring-4 ring-white shadow-xl overflow-hidden bg-white">
-                  <Avatar src={user.avatar} name={user.name} size="2xl" />
-                </div>
-                <button
-                  onClick={() => handleOpenModal("photo")}
-                  className="absolute bottom-1 right-1 p-2 bg-sb-dark hover:bg-sb-green text-white rounded-full shadow-md transition-all group-hover:scale-110 cursor-pointer z-20"
-                  title="Update Profile Photo"
-                >
-                  <Camera size={14} />
-                </button>
-              </div>
 
-              {/* Name & Headline — sits at the bottom of the avatar so they bottom-align */}
-              <div className="pb-1 space-y-1">
-                <div className="flex items-center gap-2">
-                  <h1 className="text-2xl font-bold text-sb-dark tracking-tight leading-none">{user.name}</h1>
-                  <span className="p-1 bg-sb-bg rounded-full text-sb-green shadow-xs shrink-0">
-                    <ShieldCheck size={16} />
-                  </span>
-                </div>
-                <p className="text-sm font-semibold text-sb-mid max-w-xl leading-snug">
-                  {user.headline}
-                </p>
-                <div className="flex flex-wrap items-center gap-3 text-xs text-text-muted pt-0.5">
-                  <span className="flex items-center gap-1 font-medium">
-                    <MapPin size={12} className="text-sb-green" /> {user.location}
-                  </span>
-                  <span className="text-border">•</span>
-                  <span className="flex items-center gap-1 font-medium text-sb-green">
-                    <Briefcase size={12} /> Open to Hackathon Teaming
-                  </span>
-                  <span className="text-border">•</span>
-                  <span className="text-text-secondary font-medium">500+ Connections</span>
-                </div>
+          {/* Avatar — absolutely positioned to overlap the banner above */}
+          <div
+            className="absolute -top-14 left-8 z-10 group"
+            style={{ width: "112px", height: "112px" }}
+          >
+            <div className="w-28 h-28 rounded-full ring-4 ring-white shadow-xl overflow-hidden bg-white">
+              <Avatar src={user.avatar} name={user.name} size="2xl" />
+            </div>
+            <button
+              onClick={() => handleOpenModal("photo")}
+              className="absolute bottom-1 right-1 p-2 bg-sb-dark hover:bg-sb-green text-white rounded-full shadow-md transition-all group-hover:scale-110 cursor-pointer z-20"
+              title="Update Profile Photo"
+            >
+              <Camera size={14} />
+            </button>
+          </div>
+
+          {/* Top row: spacer for avatar + name text + action buttons */}
+          {/* pt-4 gives breathing room below the banner; pl accounts for avatar width + gap */}
+          <div className="flex items-start justify-between gap-4 pt-4" style={{ paddingLeft: "136px" }}>
+            {/* Name & Headline */}
+            <div className="space-y-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h1 className="text-2xl font-bold text-sb-dark tracking-tight leading-tight">{user.name}</h1>
+                <span className="p-1 bg-sb-bg rounded-full text-sb-green shadow-xs shrink-0">
+                  <ShieldCheck size={16} />
+                </span>
+              </div>
+              <p className="text-sm font-semibold text-sb-mid leading-snug">
+                {user.headline}
+              </p>
+              <div className="flex flex-wrap items-center gap-3 text-xs text-text-muted pt-0.5">
+                <span className="flex items-center gap-1 font-medium">
+                  <MapPin size={12} className="text-sb-green" /> {user.location}
+                </span>
+                <span className="text-border">•</span>
+                <span className="flex items-center gap-1 font-medium text-sb-green">
+                  <Briefcase size={12} /> Open to Hackathon Teaming
+                </span>
+                <span className="text-border">•</span>
+                <span className="text-text-secondary font-medium">500+ Connections</span>
               </div>
             </div>
 
-            {/* Top Action Buttons */}
-            <div className="flex items-center gap-2.5 self-start md:self-auto shrink-0">
+            {/* Action Buttons */}
+            <div className="flex items-center gap-2.5 shrink-0 mt-0.5">
               <button
                 onClick={() => handleOpenModal("general")}
                 className="px-4 py-2.5 bg-sb-dark hover:bg-sb-green text-white text-xs font-semibold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2 cursor-pointer"
@@ -525,6 +528,9 @@ export default function ProfilePage() {
               </button>
             </div>
           </div>
+
+          {/* Extra space below so nothing clips under the avatar */}
+          <div className="mt-6">
 
           {/* Open to Work Banner */}
           {user.openToHackathons && (
@@ -613,8 +619,9 @@ export default function ProfilePage() {
               </a>
             )}
           </div>
-        </div>
-      </div>
+          </div>{/* close mt-6 */}
+        </div>{/* close px-8 pb-8 */}
+      </div>{/* close profile card */}
 
       {/* ─── Grid: Languages, Skills, Experience, Education ─── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
