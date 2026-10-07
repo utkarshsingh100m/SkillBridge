@@ -463,42 +463,43 @@ export default function ProfilePage() {
 
         {/* Profile Details Header */}
         <div className="px-8 pb-8 pt-0 relative">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 -mt-14 mb-6">
-            <div className="flex flex-col md:flex-row items-start md:items-end gap-5">
+          {/* Avatar row: pulls up to overlap banner by half the avatar height */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 -mt-14 mb-6">
+            <div className="flex flex-col md:flex-row md:items-end gap-5">
               {/* Profile Avatar with Camera Button */}
               <div className="relative group shrink-0" style={{ width: "112px", height: "112px" }}>
-                <div className="w-28 h-28 rounded-full ring-4 ring-white shadow-xl overflow-hidden bg-white flex items-center justify-center">
+                <div className="w-28 h-28 rounded-full ring-4 ring-white shadow-xl overflow-hidden bg-white">
                   <Avatar src={user.avatar} name={user.name} size="2xl" />
                 </div>
                 <button
                   onClick={() => handleOpenModal("photo")}
-                  className="absolute bottom-0 right-0 p-2 bg-sb-dark hover:bg-sb-green text-white rounded-full shadow-md transition-all group-hover:scale-110 cursor-pointer z-20"
+                  className="absolute bottom-1 right-1 p-2 bg-sb-dark hover:bg-sb-green text-white rounded-full shadow-md transition-all group-hover:scale-110 cursor-pointer z-20"
                   title="Update Profile Photo"
                 >
                   <Camera size={14} />
                 </button>
               </div>
 
-              {/* Name & Headline */}
-              <div className="mb-1 space-y-1">
-                <div className="flex items-center gap-2.5">
-                  <h1 className="text-2xl font-bold text-sb-dark tracking-tight">{user.name}</h1>
-                  <span className="p-1 bg-sb-bg rounded-full text-sb-green shadow-xs">
-                    <ShieldCheck size={18} />
+              {/* Name & Headline — sits at the bottom of the avatar so they bottom-align */}
+              <div className="pb-1 space-y-1">
+                <div className="flex items-center gap-2">
+                  <h1 className="text-2xl font-bold text-sb-dark tracking-tight leading-none">{user.name}</h1>
+                  <span className="p-1 bg-sb-bg rounded-full text-sb-green shadow-xs shrink-0">
+                    <ShieldCheck size={16} />
                   </span>
                 </div>
                 <p className="text-sm font-semibold text-sb-mid max-w-xl leading-snug">
                   {user.headline}
                 </p>
-                <div className="flex flex-wrap items-center gap-4 text-xs text-text-muted pt-1">
+                <div className="flex flex-wrap items-center gap-3 text-xs text-text-muted pt-0.5">
                   <span className="flex items-center gap-1 font-medium">
-                    <MapPin size={13} className="text-sb-green" /> {user.location}
+                    <MapPin size={12} className="text-sb-green" /> {user.location}
                   </span>
-                  <span>•</span>
+                  <span className="text-border">•</span>
                   <span className="flex items-center gap-1 font-medium text-sb-green">
-                    <Briefcase size={13} /> Open to Hackathon Teaming
+                    <Briefcase size={12} /> Open to Hackathon Teaming
                   </span>
-                  <span>•</span>
+                  <span className="text-border">•</span>
                   <span className="text-text-secondary font-medium">500+ Connections</span>
                 </div>
               </div>
