@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   User,
   MapPin,
@@ -105,6 +105,17 @@ export default function ProfilePage() {
     leetcodeUrl: "https://leetcode.com/praveen_codes",
     twitterUrl: "https://x.com/praveen_builds",
   });
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("skillbridge_user");
+      if (saved) {
+        setUser((prev) => ({ ...prev, ...JSON.parse(saved) }));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, []);
 
   // Languages state
   const [languages, setLanguages] = useState<LanguageProficiency[]>([
@@ -233,7 +244,7 @@ export default function ProfilePage() {
   };
 
   const handleSaveAll = () => {
-    setUser({
+    const updatedUser = {
       ...user,
       name: formName,
       headline: formHeadline,
@@ -247,7 +258,14 @@ export default function ProfilePage() {
       linkedinUrl: formLinkedin,
       portfolioUrl: formPortfolio,
       leetcodeUrl: formLeetcode,
-    });
+    };
+    setUser(updatedUser);
+    try {
+      localStorage.setItem("skillbridge_user", JSON.stringify(updatedUser));
+      window.dispatchEvent(new Event("profile_updated"));
+    } catch (e) {
+      console.error(e);
+    }
     setSavedSuccess(true);
     setTimeout(() => {
       setSavedSuccess(false);
