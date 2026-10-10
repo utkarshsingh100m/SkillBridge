@@ -213,8 +213,8 @@ export const mentorMatches: MatchResult[] = [
 export const teammates: UserProfile[] = [
   {
     id: "t1",
-    name: "Arya Shukla",
-    avatar: "/avatars/aanya.jpg",
+    name: "Arya Tripathi",
+    avatar: "/avatars/arya.jpg",
     role: "student",
     headline: "Frontend Developer | React Enthusiast",
     skills: ["React", "TypeScript", "TailwindCSS", "Figma", "Healthcare"],
@@ -226,7 +226,7 @@ export const teammates: UserProfile[] = [
   },
   {
     id: "t2",
-    name: "Vikram Reddy",
+    name: "Praveen Mishra",
     avatar: "/avatars/aman.jpg",
     role: "student",
     headline: "Backend Developer | Python & FastAPI",
@@ -297,9 +297,10 @@ export const projects: Project[] = [
     creatorId: "u1",
     teamMembers: [
       { id: "u1", name: "Utkarsh", avatar: "/avatars/utkarsh.jpg", role: "Frontend & Lead" },
-      { id: "t2b", name: "Ashmit", avatar: "/avatars/ashmit.jpg", role: "Database" },
+      { id: "t1", name: "Arya", avatar: "/avatars/aanya.jpg", role: "Mobile Dev" },
+      { id: "t2", name: "Praveen", avatar: "/avatars/vikram.jpg", role: "Backend" },
       { id: "t3", name: "Shaurya", avatar: "/avatars/shaurya.jpg", role: "Research" },
-      { id: "t4", name: "Rudraksh", avatar: "/avatars/shaurya.jpg", role: "Design" },
+      { id: "t4", name: "Rudraksh", avatar: "/avatars/rudraksh.jpg", role: "Design" },
     ],
     status: "Active",
     hackathonDeadline: "2026-10-09T18:00:00+05:30",

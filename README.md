@@ -39,9 +39,11 @@
 - **AI Prompt Suggestions**: Pre-generated prompt pills (*"Review RAG retrieval latency"*, *"Critique pitch deck"*).
 - **Instant Mentor Simulation**: Auto-responsive intelligent feedback.
 
-### 6. 🎥 Live Virtual Mentorship Room
-- **Simulation Interface**: Dual video feeds for mentor and mentee with mic/camera controls.
-- **Collaborative Scratchpad**: Real-time markdown notes and code snippet review box.
+### 6. 🎥 Live Virtual Mentorship Room & TinyFish Intelligence Briefing
+- **⚡ TinyFish Pre-Session Dossier**: Autonomous Chromium web agent crawls the student team's live GitHub repo and deployed demo before the call, extracting verified tech stack tokens, active sprint blockers, and recent git commits.
+- **1-Click Mentor Action Prompts**: Suggests targeted sprint interventions (e.g. *HyDE RAG query expansion*, *hybrid BM25 search*) that mentors can paste directly into the live scratchpad with one click.
+- **Simulation Interface**: Dual video feeds for mentor and mentee with mic/camera controls and live TinyFish crawler fleet telemetry.
+- **Collaborative Scratchpad**: Real-time markdown notes with instant auto-sync.
 - **Session History**: AI-summarized past meeting notes and actionable takeaways.
 
 ### 7. 👤 LinkedIn-Style Builder Profile & Customizer
@@ -55,11 +57,12 @@
 
 ## 🛠️ Tech Stack & Architecture
 
-- **Framework**: [Next.js 15 (App Router)](https://nextjs.org/) with Turbopack
+- **Framework**: [Next.js 16 (App Router)](https://nextjs.org/) with Turbopack
+- **AI Web Perception & Crawler**: [TinyFish](https://tinyfish.ai/) (Fetch & Agent APIs for autonomous repo crawling and live web verification)
 - **UI & Components**: React 19, Tailwind CSS v4, Lucide React Icons
 - **Language**: TypeScript (Strict Mode)
 - **Styling**: Tailored HSL Palette with custom design tokens (`--color-sb-dark`, `--color-sb-green`, `--color-sb-wash`, etc.)
-- **Performance**: 100% Statically Optimized Routes ($14/14$ routes prerendered)
+- **Performance**: 100% Statically & Dynamically Optimized Routes (18/18 routes compiled)
 
 ---
 
