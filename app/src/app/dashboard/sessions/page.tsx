@@ -28,7 +28,7 @@ import {
 import Avatar from "@/components/ui/Avatar";
 import Badge from "@/components/ui/Badge";
 import { mentors, currentUser } from "@/lib/data";
-import { defaultSkillBridgeBriefing, TinyFishBriefing } from "@/lib/tinyfish";
+import { defaultSkillBridgeBriefing, TinyFishBriefing } from "@/lib/integrations/tinyfish";
 
 interface Session {
   id: string;

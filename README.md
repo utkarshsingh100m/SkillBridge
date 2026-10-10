@@ -68,36 +68,55 @@
 
 ## 📦 Project Structure
 
-```bash
+```
 SkillBridge/
-├── app/
+├── app/                          # Next.js 16 Web Application
 │   ├── public/
-│   │   └── avatars/          # Generated profile and mentor avatar assets
+│   │   ├── avatars/              # Profile & mentor avatar images
+│   │   └── *.svg / *.ico        # Static assets
 │   ├── src/
 │   │   ├── app/
+│   │   │   ├── api/
+│   │   │   │   └── tinyfish/    # TinyFish web-perception API route
 │   │   │   ├── auth/
-│   │   │   │   ├── signin/   # Google & GitHub OAuth Sign In
-│   │   │   │   └── signup/   # Role-based Sign Up (Student vs Mentor)
+│   │   │   │   ├── signin/      # OAuth Sign In page
+│   │   │   │   └── signup/      # Role-based Sign Up (Student vs Mentor)
 │   │   │   ├── dashboard/
-│   │   │   │   ├── find-mentors/   # AI Mentor Matching & Booking
-│   │   │   │   ├── find-teammates/ # AI Skill-Gap Matching
-│   │   │   │   ├── messages/       # Chat Room & AI Copilot
-│   │   │   │   ├── profile/        # LinkedIn-Style Profile Editor
-│   │   │   │   ├── projects/       # Hackathon Showcase & Milestones
-│   │   │   │   ├── sessions/       # Virtual Call Room Simulation
-│   │   │   │   ├── team/           # Team Management & Kanban Board
-│   │   │   │   └── page.tsx        # Dashboard Main View
-│   │   │   ├── globals.css         # Custom Design Tokens & Utilities
-│   │   │   ├── layout.tsx          # Root Layout
-│   │   │   └── page.tsx            # Landing Page
+│   │   │   │   ├── find-mentors/     # AI Mentor Matching & Session Applications
+│   │   │   │   ├── find-teammates/   # AI Skill-Gap Teammate Discovery
+│   │   │   │   ├── hackathons/       # Hackathon Discovery & Filters
+│   │   │   │   ├── messages/         # Chat Room & AI Copilot
+│   │   │   │   ├── profile/          # LinkedIn-Style Profile Editor
+│   │   │   │   ├── projects/         # Hackathon Showcase & Milestones
+│   │   │   │   ├── sessions/         # Virtual Mentorship Room (TinyFish)
+│   │   │   │   ├── team/             # Team Management & Kanban Board
+│   │   │   │   └── page.tsx          # Dashboard Home
+│   │   │   ├── globals.css           # Design tokens & global styles
+│   │   │   ├── layout.tsx            # Root layout
+│   │   │   └── page.tsx              # Landing page
 │   │   ├── components/
-│   │   │   ├── layout/       # Sidebar & TopBar
-│   │   │   └── ui/           # Avatar, Badge, MatchCircle components
+│   │   │   ├── layout/               # Sidebar & TopBar navigation
+│   │   │   └── ui/                   # Avatar, Badge, MatchCircle
 │   │   └── lib/
-│   │       ├── data.ts       # Mock dataset for Hackathon simulation
-│   │       └── types.ts      # TypeScript definitions
+│   │       ├── integrations/
+│   │       │   └── tinyfish.ts       # TinyFish SDK integration
+│   │       ├── data.ts               # Mock dataset for simulation
+│   │       └── types.ts              # TypeScript type definitions
 │   ├── package.json
 │   └── tsconfig.json
+│
+├── assets/                       # Project assets & brand materials
+│   ├── brand/
+│   │   ├── SkillBridge_Logo.png
+│   │   └── SkillBridge_Build_With_Bharat_4_0_Final.pptx
+│   └── stitch_skillbridge_onboarding_portal.zip
+│
+├── design/                       # UI design references & mockups
+│   └── stitch_onboarding_screen.png
+│
+├── docs/                         # Documentation & guides
+│   └── HACKATHON_PITCH_AND_DEMO_GUIDE.md
+│
 └── README.md
 ```
 

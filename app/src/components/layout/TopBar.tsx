@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  Search,
   Bell,
   User,
   Settings,
@@ -12,7 +11,6 @@ import {
   ChevronDown,
   Sparkles,
   ShieldCheck,
-  CheckCircle2,
   Menu,
 } from "lucide-react";
 import Avatar from "@/components/ui/Avatar";
@@ -112,8 +110,8 @@ export default function TopBar() {
 
   return (
     <header className="h-16 bg-white border-b border-border flex items-center justify-between px-3 sm:px-6 sticky top-0 z-30 shadow-xs">
-      {/* Left: Mobile Menu Trigger + Search */}
-      <div className="flex items-center gap-2 flex-1 max-w-md mr-2 sm:mr-3 min-w-0">
+      {/* Left: Mobile Menu Trigger */}
+      <div className="flex items-center">
         <button
           onClick={() => window.dispatchEvent(new Event("open_mobile_sidebar"))}
           aria-label="Open Navigation Menu"
@@ -121,16 +119,6 @@ export default function TopBar() {
         >
           <Menu size={20} />
         </button>
-
-        {/* Search Input */}
-        <div className="relative flex-1 min-w-0">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted shrink-0" />
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-full pl-8 sm:pl-9 pr-3 py-1.5 sm:py-2 rounded-xl bg-surface border border-border text-xs focus:outline-none focus:ring-2 focus:ring-sb-green/20 focus:border-sb-green transition-all"
-          />
-        </div>
       </div>
 
       {/* Right Side Actions */}

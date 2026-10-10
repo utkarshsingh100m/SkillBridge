@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { defaultSkillBridgeBriefing, TinyFishBriefing } from "@/lib/tinyfish";
+import { defaultSkillBridgeBriefing, TinyFishBriefing } from "@/lib/integrations/tinyfish";
 
 export async function POST(req: Request) {
   try {

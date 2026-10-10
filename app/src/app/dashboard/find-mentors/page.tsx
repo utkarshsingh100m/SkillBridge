@@ -10,10 +10,14 @@ import {
   Clock,
   CheckCircle2,
   X,
-  MessageSquare,
   ShieldCheck,
   Send,
-  Video,
+  FileText,
+  ChevronRight,
+  Loader2,
+  User2,
+  BookOpen,
+  MessageSquare,
 } from "lucide-react";
 import Avatar from "@/components/ui/Avatar";
 import Badge from "@/components/ui/Badge";
@@ -49,14 +53,22 @@ const mentorMatches: Record<string, { matchScore: number; matchReasons: string[]
   },
 };
 
+const EXPERIENCE_LEVELS = ["Beginner", "Intermediate", "Advanced"];
+
 export default function FindMentorsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedDomain, setSelectedDomain] = useState("All");
   const [selectedMentor, setSelectedMentor] = useState<UserProfile | null>(null);
-  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [applicationModalOpen, setApplicationModalOpen] = useState(false);
+
+  // Application form state
   const [selectedSlot, setSelectedSlot] = useState<{ day: string; time: string } | null>(null);
   const [sessionTopic, setSessionTopic] = useState("");
-  const [bookingConfirmed, setBookingConfirmed] = useState(false);
+  const [goals, setGoals] = useState("");
+  const [experienceLevel, setExperienceLevel] = useState("Intermediate");
+  const [coverNote, setCoverNote] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [applicationSent, setApplicationSent] = useState(false);
 
   const domains = ["All", "AI / ML", "Healthcare Tech", "Product & Pitch", "Web Dev"];
 
@@ -91,23 +103,31 @@ export default function FindMentorsPage() {
     return matchesSearch;
   });
 
-  const handleOpenBooking = (mentor: UserProfile) => {
+  const handleOpenApplication = (mentor: UserProfile) => {
     setSelectedMentor(mentor);
     setSelectedSlot(null);
-    setSessionTopic(`1-on-1 Guidance on HealthAI Architecture & Demo`);
-    setBookingConfirmed(false);
-    setBookingModalOpen(true);
+    setSessionTopic("1-on-1 Guidance on HealthAI Architecture & Demo");
+    setGoals("");
+    setCoverNote("");
+    setExperienceLevel("Intermediate");
+    setApplicationSent(false);
+    setApplicationModalOpen(true);
   };
 
-  const handleConfirmBooking = (e: React.FormEvent) => {
+  const handleSubmitApplication = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedSlot) return;
-    setBookingConfirmed(true);
+    if (!selectedSlot || !goals.trim() || !coverNote.trim()) return;
+    setIsSubmitting(true);
+    await new Promise((res) => setTimeout(res, 1600));
+    setIsSubmitting(false);
+    setApplicationSent(true);
     setTimeout(() => {
-      setBookingModalOpen(false);
-      setBookingConfirmed(false);
-    }, 2200);
+      setApplicationModalOpen(false);
+      setApplicationSent(false);
+    }, 2800);
   };
+
+  const isFormValid = selectedSlot && goals.trim() && coverNote.trim() && sessionTopic.trim();
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
@@ -118,11 +138,15 @@ export default function FindMentorsPage() {
           <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs font-semibold uppercase tracking-wider text-sb-wash mb-3">
             <Sparkles size={14} className="text-sb-gold" /> AI-Powered Mentor Match
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">Connect with Industry Mentors</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-white">Connect with Industry Mentors</h1>
           <p className="text-white/80 text-sm mt-2 leading-relaxed">
             SkillBridge calculates semantic compatibility between your hackathon project
             (&ldquo;HealthAI Assistant&rdquo;) and verified senior engineering and product leaders.
           </p>
+          <div className="mt-4 flex items-center gap-2 text-xs text-white/60">
+            <FileText size={13} className="text-white/50" />
+            <span>Send an application to mentors — they&apos;ll review and confirm your session.</span>
+          </div>
         </div>
       </div>
 
@@ -242,127 +266,206 @@ export default function FindMentorsPage() {
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => handleOpenBooking(mentor)}
-                    className="px-3.5 py-1.5 bg-sb-dark hover:bg-sb-green text-white text-xs font-semibold rounded-lg shadow-sm transition-all duration-200 flex items-center gap-1.5"
-                  >
-                    <Calendar size={13} /> Book Session
-                  </button>
-                </div>
+                <button
+                  onClick={() => handleOpenApplication(mentor)}
+                  className="px-3.5 py-1.5 bg-sb-dark hover:bg-sb-green text-white text-xs font-semibold rounded-lg shadow-sm transition-all duration-200 flex items-center gap-1.5"
+                >
+                  <Send size={13} /> Apply for Session
+                </button>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Booking Modal */}
-      {bookingModalOpen && selectedMentor && (
+      {/* Application Modal */}
+      {applicationModalOpen && selectedMentor && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-lg w-full border border-border shadow-2xl overflow-hidden animate-scale-up">
-            <div className="p-6 border-b border-border flex items-center justify-between bg-surface">
-              <div className="flex items-center gap-3">
+          <div className="bg-white rounded-3xl max-w-lg w-full border border-border shadow-2xl overflow-hidden animate-scale-up max-h-[90vh] flex flex-col">
+            {/* Modal Header */}
+            <div className="p-5 border-b border-border flex items-center justify-between bg-gradient-to-r from-sb-dark/5 to-sb-green/5 shrink-0">
+              <div className="flex items-center gap-3 min-w-0">
                 <Avatar src={selectedMentor.avatar} name={selectedMentor.name} size="md" />
-                <div>
-                  <h3 className="text-base font-bold text-sb-dark">
-                    Book Mentorship with {selectedMentor.name}
+                <div className="min-w-0">
+                  <h3 className="text-sm font-bold text-sb-dark truncate">
+                    Apply — {selectedMentor.name}
                   </h3>
-                  <p className="text-xs text-text-muted">{selectedMentor.headline}</p>
+                  <p className="text-[11px] text-text-muted truncate">{selectedMentor.headline}</p>
+                  <span className="inline-flex items-center gap-1 text-[11px] text-amber-600 font-medium mt-0.5">
+                    <Clock size={10} /> Mentor reviews within 24 hrs
+                  </span>
                 </div>
               </div>
               <button
-                onClick={() => setBookingModalOpen(false)}
-                className="text-text-muted hover:text-sb-dark p-1 rounded-lg hover:bg-white transition-colors"
+                onClick={() => setApplicationModalOpen(false)}
+                className="text-text-muted hover:text-sb-dark p-1 rounded-lg hover:bg-white transition-colors shrink-0 ml-2"
               >
                 <X size={18} />
               </button>
             </div>
 
-            {bookingConfirmed ? (
-              <div className="p-8 text-center space-y-4">
+            {/* Success State */}
+            {applicationSent ? (
+              <div className="p-10 text-center space-y-4 flex-1 flex flex-col items-center justify-center">
                 <div className="w-16 h-16 bg-sb-bg text-sb-green rounded-full flex items-center justify-center mx-auto animate-bounce">
                   <CheckCircle2 size={36} />
                 </div>
                 <div>
-                  <h4 className="text-lg font-bold text-sb-dark">Session Confirmed!</h4>
-                  <p className="text-xs text-text-secondary mt-1">
-                    Your 30-minute session with {selectedMentor.name} on{" "}
-                    <strong>
-                      {selectedSlot?.day} at {selectedSlot?.time}
-                    </strong>{" "}
-                    is scheduled. A calendar invite and Google Meet link have been sent.
+                  <h4 className="text-lg font-bold text-sb-dark">Application Sent!</h4>
+                  <p className="text-xs text-text-secondary mt-2 max-w-xs mx-auto leading-relaxed">
+                    Your session application has been sent to{" "}
+                    <strong className="text-sb-dark">{selectedMentor.name}</strong>. You&apos;ll receive
+                    a confirmation once they review and approve your request.
                   </p>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-700 font-medium">
+                  <Clock size={13} />
+                  Average response time: 4–12 hours
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleConfirmBooking} className="p-6 space-y-5">
-                <div>
-                  <label className="block text-xs font-bold text-sb-dark uppercase tracking-wider mb-2">
-                    1. Select Available Time Slot (30 Mins)
-                  </label>
-                  <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
-                    {selectedMentor.availability?.map((slot) =>
-                      slot.times.map((time) => {
-                        const isSelected =
-                          selectedSlot?.day === slot.day && selectedSlot?.time === time;
-                        return (
-                          <button
-                            type="button"
-                            key={`${slot.day}-${time}`}
-                            onClick={() => setSelectedSlot({ day: slot.day, time })}
-                            className={`p-2.5 rounded-xl text-left border transition-all flex items-center justify-between ${
-                              isSelected
-                                ? "border-sb-green bg-sb-bg text-sb-dark font-semibold shadow-sm"
-                                : "border-border hover:border-sb-mid text-text-secondary hover:bg-surface"
-                            }`}
-                          >
-                            <span className="text-xs flex items-center gap-1.5">
-                              <Clock size={13} className="text-sb-green" /> {slot.day}, {time}
-                            </span>
-                            {isSelected && <CheckCircle2 size={14} className="text-sb-green" />}
-                          </button>
-                        );
-                      })
-                    )}
+              <form onSubmit={handleSubmitApplication} className="overflow-y-auto flex-1">
+                <div className="p-5 space-y-5">
+                  {/* Step 1: Preferred Time */}
+                  <div>
+                    <label className="flex items-center gap-1.5 text-xs font-bold text-sb-dark uppercase tracking-wider mb-2.5">
+                      <Calendar size={13} className="text-sb-green" />
+                      1. Preferred Time Slot
+                    </label>
+                    <div className="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto pr-1">
+                      {selectedMentor.availability?.map((slot) =>
+                        slot.times.map((time) => {
+                          const isSelected =
+                            selectedSlot?.day === slot.day && selectedSlot?.time === time;
+                          return (
+                            <button
+                              type="button"
+                              key={`${slot.day}-${time}`}
+                              onClick={() => setSelectedSlot({ day: slot.day, time })}
+                              className={`p-2.5 rounded-xl text-left border transition-all flex items-center justify-between ${
+                                isSelected
+                                  ? "border-sb-green bg-sb-bg text-sb-dark font-semibold shadow-sm"
+                                  : "border-border hover:border-sb-mid text-text-secondary hover:bg-surface"
+                              }`}
+                            >
+                              <span className="text-xs flex items-center gap-1.5">
+                                <Clock size={13} className="text-sb-green" /> {slot.day}, {time}
+                              </span>
+                              {isSelected && <CheckCircle2 size={14} className="text-sb-green" />}
+                            </button>
+                          );
+                        })
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Step 2: Session Topic */}
+                  <div>
+                    <label className="flex items-center gap-1.5 text-xs font-bold text-sb-dark uppercase tracking-wider mb-2">
+                      <MessageSquare size={13} className="text-sb-green" />
+                      2. Session Topic
+                    </label>
+                    <input
+                      type="text"
+                      value={sessionTopic}
+                      onChange={(e) => setSessionTopic(e.target.value)}
+                      placeholder="e.g. RAG Architecture Review, Pitch Deck Feedback..."
+                      className="w-full p-3 bg-surface rounded-xl text-xs border border-border focus:outline-none focus:ring-2 focus:ring-sb-green/20 focus:border-sb-green"
+                      required
+                    />
+                  </div>
+
+                  {/* Step 3: Goals */}
+                  <div>
+                    <label className="flex items-center gap-1.5 text-xs font-bold text-sb-dark uppercase tracking-wider mb-2">
+                      <BookOpen size={13} className="text-sb-green" />
+                      3. What Do You Hope to Achieve?
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={goals}
+                      onChange={(e) => setGoals(e.target.value)}
+                      placeholder="e.g. Feedback on retrieval pipeline, advice on latency reduction..."
+                      className="w-full p-3 bg-surface rounded-xl text-xs border border-border focus:outline-none focus:ring-2 focus:ring-sb-green/20 focus:border-sb-green resize-none"
+                      required
+                    />
+                  </div>
+
+                  {/* Step 4: Experience Level */}
+                  <div>
+                    <label className="flex items-center gap-1.5 text-xs font-bold text-sb-dark uppercase tracking-wider mb-2">
+                      <User2 size={13} className="text-sb-green" />
+                      4. Your Experience Level
+                    </label>
+                    <div className="flex items-center gap-2">
+                      {["Beginner", "Intermediate", "Advanced"].map((level) => (
+                        <button
+                          type="button"
+                          key={level}
+                          onClick={() => setExperienceLevel(level)}
+                          className={`flex-1 py-2 rounded-xl text-xs font-semibold border transition-all ${
+                            experienceLevel === level
+                              ? "bg-sb-dark text-white border-sb-dark"
+                              : "bg-surface text-text-secondary border-border hover:border-sb-mid"
+                          }`}
+                        >
+                          {level}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Step 5: Cover Note */}
+                  <div>
+                    <label className="flex items-center gap-1.5 text-xs font-bold text-sb-dark uppercase tracking-wider mb-2">
+                      <FileText size={13} className="text-sb-green" />
+                      5. Brief Intro / Cover Note
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={coverNote}
+                      onChange={(e) => setCoverNote(e.target.value)}
+                      placeholder="Introduce yourself — your background, project context, and why you'd like their guidance..."
+                      className="w-full p-3 bg-surface rounded-xl text-xs border border-border focus:outline-none focus:ring-2 focus:ring-sb-green/20 focus:border-sb-green resize-none"
+                      required
+                    />
+                  </div>
+
+                  {/* Info note */}
+                  <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-3 flex items-start gap-2 text-xs text-indigo-800">
+                    <ChevronRight size={14} className="text-indigo-500 shrink-0 mt-0.5" />
+                    <span>
+                      The mentor will review your application and respond within 24 hours. You&apos;ll be
+                      notified when they confirm or suggest an alternative time.
+                    </span>
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-sb-dark uppercase tracking-wider mb-2">
-                    2. Discussion Topic / Questions
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={sessionTopic}
-                    onChange={(e) => setSessionTopic(e.target.value)}
-                    placeholder="Describe what you want help with (e.g. RAG architecture, pitch feedback)..."
-                    className="w-full p-3 bg-surface rounded-xl text-xs border border-border focus:outline-none focus:ring-2 focus:ring-sb-green/20 focus:border-sb-green"
-                    required
-                  />
-                </div>
-
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-2 text-xs text-amber-800">
-                  <Video size={16} className="text-amber-600 shrink-0 mt-0.5" />
-                  <span>
-                    Sessions include live screen sharing, AI whiteboard, and auto-generated summary
-                    notes.
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-end gap-3 pt-2">
+                {/* Footer */}
+                <div className="px-5 pb-5 flex items-center justify-end gap-3 border-t border-border pt-4">
                   <button
                     type="button"
-                    onClick={() => setBookingModalOpen(false)}
-                    className="px-4 py-2 text-xs font-medium text-text-secondary hover:text-sb-dark"
+                    onClick={() => setApplicationModalOpen(false)}
+                    className="px-4 py-2 text-xs font-medium text-text-secondary hover:text-sb-dark transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    disabled={!selectedSlot}
-                    className="px-5 py-2.5 bg-sb-dark hover:bg-sb-green text-white text-xs font-semibold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed shadow-md transition-all flex items-center gap-2"
+                    disabled={!isFormValid || isSubmitting}
+                    className="px-5 py-2.5 bg-sb-dark hover:bg-sb-green text-white text-xs font-semibold rounded-xl disabled:opacity-50 disabled:cursor-not-allowed shadow-md transition-all flex items-center gap-2 min-w-[148px] justify-center"
                   >
-                    <Send size={13} /> Confirm Booking
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 size={13} className="animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={13} />
+                        Send Application
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
